@@ -1,0 +1,278 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&display=swap');
+
+/* ── Container fixo, sobrepõe o vídeo ─────── */
+.navbarContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  /* começa transparente — JS adiciona .scrolled via data-attr */
+  background: transparent;
+  transition:
+    background 0.35s ease,
+    backdrop-filter 0.35s ease,
+    border-color 0.35s ease,
+    box-shadow 0.35s ease;
+  border-bottom: 1px solid transparent;
+}
+
+/* Estado após scroll — aplicado via className no componente */
+.navbarContainer[data-scrolled='true'] {
+  background: rgba(8, 10, 12, 0.82);
+  backdrop-filter: blur(18px) saturate(1.4);
+  -webkit-backdrop-filter: blur(18px) saturate(1.4);
+  border-bottom-color: rgba(255, 255, 255, 0.06);
+  box-shadow: 0 4px 32px rgba(0, 0, 0, 0.4);
+}
+
+/* ── Navbar inner ──────────────────────────── */
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 clamp(1.5rem, 5vw, 3rem);
+  height: 68px;
+}
+
+/* ── Logo ──────────────────────────────────── */
+.navbarLogo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.logoIcon {
+  width: 36px;
+  height: 36px;
+  background: #25d366;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Manrope', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #060a0d;
+  letter-spacing: 0.04em;
+  flex-shrink: 0;
+  transition:
+    box-shadow 0.2s,
+    transform 0.2s;
+}
+
+.navbarLogo:hover .logoIcon {
+  box-shadow: 0 0 18px rgba(0, 229, 255, 0.5);
+  transform: scale(1.05);
+}
+
+.logoText {
+  font-family: 'Manrope', sans-serif;
+  font-size: 1rem;
+  font-weight: 800;
+  color: #f0f2f5;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  transition: color 0.2s;
+}
+
+.navbarLogo:hover .logoText {
+  color: none;
+}
+
+/* ── Links desktop ─────────────────────────── */
+.navbarLinks {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.navLink {
+  position: relative;
+  padding: 0.45rem 0.9rem;
+  font-family: 'Manrope', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: rgba(240, 242, 245, 0.65);
+  text-decoration: none;
+  border-radius: 8px;
+  letter-spacing: 0.01em;
+  transition:
+    color 0.2s,
+    background 0.2s;
+}
+
+.navLink::after {
+  content: '';
+  position: absolute;
+  bottom: 2px;
+  left: 50%;
+  transform: translateX(-50%) scaleX(0);
+  width: 16px;
+  height: 2px;
+  background: #fff;
+  border-radius: 2px;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.navLink:hover {
+  color: #f0f2f5;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.navLink:hover::after,
+.active::after {
+  transform: translateX(-50%) scaleX(1);
+}
+
+.active {
+  color: #25d366 !important;
+}
+
+/* ── Ações direita ─────────────────────────── */
+.navbarActions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-shrink: 0;
+}
+
+/* Botão Entrar */
+.loginBtn {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 1.25rem;
+  background: #25d366;
+  color: #060a0d;
+  font-family: 'Manrope', sans-serif;
+  font-size: 0.84rem;
+  font-weight: 700;
+  text-decoration: none;
+  border-radius: 8px;
+  letter-spacing: 0.02em;
+  transition:
+    background 0.2s,
+    transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.2s;
+}
+
+.loginBtn:hover {
+  background: #fff;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(0, 229, 255, 0.3);
+}
+
+.loginBtn:active {
+  transform: none;
+}
+
+/* ── Hambúrguer ────────────────────────────── */
+.menuBtn {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: #f0f2f5;
+  font-size: 1rem;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    border-color 0.2s;
+  /* reset browser defaults */
+  padding: 0;
+  line-height: 1;
+}
+
+.menuBtn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(0, 229, 255, 0.3);
+  color: #25d366;
+}
+
+/* ── Menu mobile ───────────────────────────── */
+.mobileMenu {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 0.75rem 1rem 1rem;
+  background: rgba(8, 10, 12, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  animation: slideDown 0.25s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.mobileLink {
+  padding: 0.75rem 1rem;
+  font-family: 'Manrope', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: rgba(240, 242, 245, 0.7);
+  text-decoration: none;
+  border-radius: 8px;
+  transition:
+    color 0.2s,
+    background 0.2s;
+  letter-spacing: 0.01em;
+}
+
+.mobileLink:hover {
+  color: #f0f2f5;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.mobileLogin {
+  margin-top: 0.5rem;
+  padding: 0.78rem 1rem;
+  background: #25d366;
+  color: #060a0d;
+  font-family: 'Manrope', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-decoration: none;
+  border-radius: 8px;
+  text-align: center;
+  letter-spacing: 0.02em;
+  transition: background 0.2s;
+}
+
+.mobileLogin:hover {
+  background: #33eeff;
+}
+
+/* ── Animação do menu mobile ───────────────── */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── Responsivo ────────────────────────────── */
+@media (max-width: 720px) {
+  .navbarLinks {
+    display: none;
+  }
+  .menuBtn {
+    display: flex;
+  }
+}
+
+@media (max-width: 400px) {
+  .logoText {
+    display: none;
+  }
+}

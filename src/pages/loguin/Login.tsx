@@ -47,75 +47,64 @@ export default function Login() {
     return novosErros
   }, [form.email, form.senha])
 
-  const handleChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const { name, value, type, checked } = e.target
+  // ✅ CORREÇÃO PRINCIPAL: Tratamento específico por campo
+  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value, type, checked } = e.target
 
-      setForm((prev) => ({
-        ...prev,
-        [name as keyof FormState]: type === 'checkbox' ? checked : value,
-      }))
+    // ✅ Type guards explícitos para cada campo
+    if (name === 'email') {
+      setForm(prev => ({ ...prev, email: value }))
+    } else if (name === 'senha') {
+      setForm(prev => ({ ...prev, senha: value }))
+    } else if (name === 'lembrar') {
+      setForm(prev => ({ ...prev, lembrar: checked }))
+    }
 
-      // Limpa erro do campo
-      if (erros[name as keyof ErrosForm]) {
-        setErros((prev) => ({ ...prev, [name]: undefined }))
+    // Limpa erro do campo
+    if (erros[name as keyof ErrosForm]) {
+      setErros(prev => ({ ...prev, [name]: undefined }))
+    }
+  }, [erros])
+
+  const handleSubmit = useCallback((e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    const novosErros = validar()
+
+    if (Object.keys(novosErros).length > 0) {
+      setErros(novosErros)
+      if (novosErros.email && emailRef.current) {
+        emailRef.current.focus()
       }
-    },
-    [erros],
-  )
+      return
+    }
 
-  const handleSubmit = useCallback(
-    (e: React.FormEvent<HTMLFormElement>) => {
-      e.preventDefault()
-      const novosErros = validar()
+    setCarregando(true)
+    setTimeout(() => {
+      console.log('Login:', { perfil, ...form })
+      setCarregando(false)
+    }, 1600)
+  }, [form, perfil, validar])
 
-      if (Object.keys(novosErros).length > 0) {
-        setErros(novosErros)
-        // Foca no primeiro erro
-        if (novosErros.email && emailRef.current) {
-          emailRef.current.focus()
-        }
-        return
-      }
+  const trocarPerfil = useCallback((novoPerfil: Perfil) => {
+    if (novoPerfil === perfil) return
 
-      setCarregando(true)
-      // Simula API
-      setTimeout(() => {
-        console.log('Login:', { perfil, ...form })
-        setCarregando(false)
-        // Limpa form após sucesso (opcional)
-        // setForm({ email: '', senha: '', lembrar: false })
-      }, 1600)
-    },
-    [form, perfil, validar],
-  )
+    setPerfil(novoPerfil)
+    setErros({})
+    setForm({ email: '', senha: '', lembrar: false })
+    setTimeout(() => emailRef.current?.focus(), 100)
+  }, [perfil])
 
-  const trocarPerfil = useCallback(
-    (novoPerfil: Perfil) => {
-      if (novoPerfil === perfil) return
-
-      setPerfil(novoPerfil)
-      setErros({})
-      setForm({ email: '', senha: '', lembrar: false })
-
-      // Foca no email após trocar
-      setTimeout(() => emailRef.current?.focus(), 100)
-    },
-    [perfil],
-  )
-
+  // Resto do JSX permanece IDENTICO...
   return (
     <div className={`lg-page ${isRH ? 'lg-page--rh' : ''}`}>
-      {/* ── Fundo decorativo ── */}
+      {/* ── Todo o JSX continua exatamente igual ── */}
       <div className="lg-bg" aria-hidden="true">
         <div className="lg-bg__orb lg-bg__orb--1" />
         <div className="lg-bg__orb lg-bg__orb--2" />
         <div className="lg-bg__grid" />
       </div>
 
-      {/* ── Card principal ── */}
       <div className="lg-card">
-        {/* Topo do card */}
         <div className="lg-card__top">
           <div className="lg-logo">
             {isRH ? (
@@ -124,7 +113,6 @@ export default function Login() {
               <User size={28} strokeWidth={1.8} />
             )}
           </div>
-
           <div className="lg-card__intro">
             <h1 className="lg-card__title">
               {isRH ? 'Acesso RH' : 'Portal do Colaborador'}
@@ -137,7 +125,6 @@ export default function Login() {
           </div>
         </div>
 
-        {/* Toggle Funcionário / RH */}
         <div className="lg-toggle" role="group" aria-label="Tipo de acesso">
           <button
             type="button"
@@ -159,16 +146,13 @@ export default function Login() {
           </button>
         </div>
 
-        {/* Indicador de perfil ativo */}
         <div className={`lg-badge ${isRH ? 'lg-badge--rh' : 'lg-badge--func'}`}>
           {isRH
             ? '🔐 Acesso com privilégios administrativos'
             : '👤 Acesso padrão de colaborador'}
         </div>
 
-        {/* Formulário */}
         <form className="lg-form" onSubmit={handleSubmit} noValidate>
-          {/* E-mail */}
           <div className={`lg-field ${erros.email ? 'lg-field--error' : ''}`}>
             <label htmlFor="email">E-mail corporativo</label>
             <div className="lg-field__wrap">
@@ -194,7 +178,6 @@ export default function Login() {
             )}
           </div>
 
-          {/* Senha */}
           <div className={`lg-field ${erros.senha ? 'lg-field--error' : ''}`}>
             <label htmlFor="senha">Senha</label>
             <div className="lg-field__wrap">
@@ -227,7 +210,6 @@ export default function Login() {
             )}
           </div>
 
-          {/* Lembrar + Esqueceu */}
           <div className="lg-extras">
             <label className="lg-check">
               <input
@@ -245,7 +227,6 @@ export default function Login() {
             </a>
           </div>
 
-          {/* Botão */}
           <button
             type="submit"
             className={`lg-btn ${isRH ? 'lg-btn--rh' : 'lg-btn--func'}`}
@@ -263,7 +244,6 @@ export default function Login() {
           </button>
         </form>
 
-        {/* Rodapé */}
         <p className="lg-footer">
           Problemas de acesso?{' '}
           <a href="mailto:ti@empresa.com.br" className="lg-link">
@@ -272,7 +252,6 @@ export default function Login() {
         </p>
       </div>
 
-      {/* Crédito de versão */}
       <span className="lg-version" aria-hidden="true">
         Sistema v2.0
       </span>

@@ -49,7 +49,7 @@ export default function Login() {
 
   // ✅ CORREÇÃO PRINCIPAL: Tratamento específico por campo
   const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value, type, checked } = e.target
+    const { name, value, checked } = e.target
 
     // ✅ Type guards explícitos para cada campo
     if (name === 'email') {

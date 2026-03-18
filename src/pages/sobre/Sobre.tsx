@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react' // ← SEM ReactNode
 import {
   Code2,
   Layers,
@@ -15,13 +15,12 @@ import {
   Twitter,
 } from 'lucide-react'
 import './Sobre.modules.css'
-import type { LucideIcon } from 'lucide-react' // ✅ Tipo oficial Lucide
+import type { LucideIcon } from 'lucide-react'
 
 const ANO_FUNDACAO = 2020
 const ANO_ATUAL = new Date().getFullYear()
 const ANOS_MERCADO = ANO_ATUAL - ANO_FUNDACAO
 
-// ✅ CORRIGIDO: Usa LucideIcon ao invés de JSX
 const SERVICOS: Array<{
   icon: LucideIcon
   titulo: string
@@ -112,6 +111,7 @@ const TIMELINE = [
   { ano: ANO_ATUAL, evento: 'Referência regional em frontend' },
 ]
 
+// ✅ TIPOS CORRIGIDOS
 type CountTarget = string | number
 
 function useCountUp(
@@ -242,14 +242,12 @@ const empresa = {
         </div>
       </section>
 
-      {/* STATS */}
       <section className="sb-stats" ref={statsRef}>
         {STATS.map((s, i) => (
-          <Stat key={i} num={s.num} label={s.label} trigger={statsVisible} />
+          <Stat key={i} {...s} trigger={statsVisible} />
         ))}
       </section>
 
-      {/* SOBRE */}
       <section className="sb-about" id="sobre">
         <div className="sb-about__text">
           <span className="sb-label">Nossa história</span>
@@ -287,7 +285,7 @@ const empresa = {
               className="sb-timeline__item"
               style={
                 {
-                  '--delay': `${i * 0.1}s`,
+                  animationDelay: `${i * 0.1}s`,
                 } as React.CSSProperties
               }
             >
@@ -303,7 +301,6 @@ const empresa = {
         </div>
       </section>
 
-      {/* SERVIÇOS */}
       <section className="sb-services" id="servicos">
         <div className="sb-services__header">
           <span className="sb-label">O que fazemos</span>
@@ -319,10 +316,11 @@ const empresa = {
               className="sb-service-card"
               style={
                 {
-                  '--delay': `${i * 0.08}s`,
+                  animationDelay: `${i * 0.08}s`,
                 } as React.CSSProperties
               }
             >
+              {/* ✅ CORRIGIDO: <s.icon> → <s.icon /> */}
               <div className="sb-service-card__icon">
                 <s.icon size={28} />
               </div>
@@ -338,7 +336,6 @@ const empresa = {
         </div>
       </section>
 
-      {/* STACK */}
       <section className="sb-tech">
         <span className="sb-label">Nosso stack</span>
         <h2 className="sb-title">
@@ -353,7 +350,6 @@ const empresa = {
         </div>
       </section>
 
-      {/* EQUIPE */}
       <section className="sb-team" id="equipe">
         <div className="sb-team__header">
           <span className="sb-label">As pessoas por trás</span>
@@ -369,7 +365,7 @@ const empresa = {
               className="sb-member"
               style={
                 {
-                  '--delay': `${i * 0.1}s`,
+                  animationDelay: `${i * 0.1}s`,
                 } as React.CSSProperties
               }
             >
@@ -406,7 +402,6 @@ const empresa = {
         </div>
       </section>
 
-      {/* CTA */}
       <section className="sb-cta">
         <div className="sb-cta__inner">
           <div className="sb-cta__glow" />

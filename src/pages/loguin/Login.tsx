@@ -1,5 +1,4 @@
-// src/pages/login/Login.tsx
-import { useState, useRef } from 'react'
+import { useState, useRef, useCallback } from 'react'
 import { Mail, Lock, Eye, EyeOff, ShieldCheck, User } from 'lucide-react'
 import './Login.modules.css'
 
@@ -11,6 +10,11 @@ interface FormState {
   lembrar: boolean
 }
 
+interface ErrosForm {
+  email?: string
+  senha?: string
+}
+
 export default function Login() {
   const [perfil, setPerfil] = useState<Perfil>('funcionario')
   const [form, setForm] = useState<FormState>({
@@ -18,56 +22,87 @@ export default function Login() {
     senha: '',
     lembrar: false,
   })
-  const [mostrarSenha, setMostrar] = useState(false)
+  const [mostrarSenha, setMostrarSenha] = useState(false)
   const [carregando, setCarregando] = useState(false)
-  const [erros, setErros] = useState<
-  Partial<Record<keyof FormState, string>>
->({})
+  const [erros, setErros] = useState<ErrosForm>({})
   const emailRef = useRef<HTMLInputElement>(null)
 
   const isRH = perfil === 'rh'
 
-  const validar = () => {
-    const e: Partial<Record<keyof FormState, string>> = {}
-    if (!form.email.trim()) e.email = 'Informe seu e-mail'
-    else if (!/\S+@\S+\.\S+/.test(form.email)) e.email = 'E-mail inválido'
-    if (!form.senha.trim()) e.senha = 'Informe sua senha'
-    else if (form.senha.length < 6) e.senha = 'Mínimo 6 caracteres'
-    return e
-  }
+  const validar = useCallback((): ErrosForm => {
+    const novosErros: ErrosForm = {}
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value, type, checked } = e.target
-
-    setForm((prev) => ({
-      ...prev,
-      [name]: type === 'checkbox' ? checked : value,
-    }))
-    if (erros[name as keyof FormState])
-      setErros((prev) => ({ ...prev, [name]: '' }))
-  }
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    const e2 = validar()
-    if (Object.keys(e2).length) {
-      setErros(e2)
-      return
+    if (!form.email.trim()) {
+      novosErros.email = 'Informe seu e-mail'
+    } else if (!/\S+@\S+\.\S+/.test(form.email)) {
+      novosErros.email = 'E-mail inválido'
     }
-    setCarregando(true)
-    // ↓ substitua pela sua chamada real de API
-    setTimeout(() => {
-      console.log('Login:', { perfil, ...form })
-      setCarregando(false)
-    }, 1600)
-  }
 
-  const trocarPerfil = (p: Perfil) => {
-    if (p === perfil) return
-    setPerfil(p)
-    setErros({})
-    emailRef.current?.focus()
-  }
+    if (!form.senha.trim()) {
+      novosErros.senha = 'Informe sua senha'
+    } else if (form.senha.length < 6) {
+      novosErros.senha = 'Mínimo 6 caracteres'
+    }
+
+    return novosErros
+  }, [form.email, form.senha])
+
+  const handleChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const { name, value, type, checked } = e.target
+
+      setForm((prev) => ({
+        ...prev,
+        [name as keyof FormState]: type === 'checkbox' ? checked : value,
+      }))
+
+      // Limpa erro do campo
+      if (erros[name as keyof ErrosForm]) {
+        setErros((prev) => ({ ...prev, [name]: undefined }))
+      }
+    },
+    [erros],
+  )
+
+  const handleSubmit = useCallback(
+    (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault()
+      const novosErros = validar()
+
+      if (Object.keys(novosErros).length > 0) {
+        setErros(novosErros)
+        // Foca no primeiro erro
+        if (novosErros.email && emailRef.current) {
+          emailRef.current.focus()
+        }
+        return
+      }
+
+      setCarregando(true)
+      // Simula API
+      setTimeout(() => {
+        console.log('Login:', { perfil, ...form })
+        setCarregando(false)
+        // Limpa form após sucesso (opcional)
+        // setForm({ email: '', senha: '', lembrar: false })
+      }, 1600)
+    },
+    [form, perfil, validar],
+  )
+
+  const trocarPerfil = useCallback(
+    (novoPerfil: Perfil) => {
+      if (novoPerfil === perfil) return
+
+      setPerfil(novoPerfil)
+      setErros({})
+      setForm({ email: '', senha: '', lembrar: false })
+
+      // Foca no email após trocar
+      setTimeout(() => emailRef.current?.focus(), 100)
+    },
+    [perfil],
+  )
 
   return (
     <div className={`lg-page ${isRH ? 'lg-page--rh' : ''}`}>
@@ -89,6 +124,7 @@ export default function Login() {
               <User size={28} strokeWidth={1.8} />
             )}
           </div>
+
           <div className="lg-card__intro">
             <h1 className="lg-card__title">
               {isRH ? 'Acesso RH' : 'Portal do Colaborador'}
@@ -107,6 +143,7 @@ export default function Login() {
             type="button"
             className={`lg-toggle__btn ${perfil === 'funcionario' ? 'lg-toggle__btn--active' : ''}`}
             onClick={() => trocarPerfil('funcionario')}
+            aria-pressed={perfil === 'funcionario'}
           >
             <User size={15} />
             Funcionário
@@ -115,6 +152,7 @@ export default function Login() {
             type="button"
             className={`lg-toggle__btn ${isRH ? 'lg-toggle__btn--active' : ''}`}
             onClick={() => trocarPerfil('rh')}
+            aria-pressed={isRH}
           >
             <ShieldCheck size={15} />
             RH
@@ -145,10 +183,14 @@ export default function Login() {
                 onChange={handleChange}
                 autoComplete="email"
                 autoFocus
+                aria-describedby={erros.email ? 'email-error' : undefined}
+                aria-invalid={!!erros.email}
               />
             </div>
             {erros.email && (
-              <span className="lg-field__err">{erros.email}</span>
+              <span id="email-error" className="lg-field__err" role="alert">
+                {erros.email}
+              </span>
             )}
           </div>
 
@@ -165,18 +207,23 @@ export default function Login() {
                 value={form.senha}
                 onChange={handleChange}
                 autoComplete="current-password"
+                aria-describedby={erros.senha ? 'senha-error' : undefined}
+                aria-invalid={!!erros.senha}
               />
               <button
                 type="button"
                 className="lg-field__eye"
-                onClick={() => setMostrar((v) => !v)}
+                onClick={() => setMostrarSenha((v) => !v)}
                 aria-label={mostrarSenha ? 'Ocultar senha' : 'Mostrar senha'}
+                tabIndex={0}
               >
                 {mostrarSenha ? <EyeOff size={16} /> : <Eye size={16} />}
               </button>
             </div>
             {erros.senha && (
-              <span className="lg-field__err">{erros.senha}</span>
+              <span id="senha-error" className="lg-field__err" role="alert">
+                {erros.senha}
+              </span>
             )}
           </div>
 
@@ -186,13 +233,14 @@ export default function Login() {
               <input
                 type="checkbox"
                 name="lembrar"
+                id="lembrar"
                 checked={form.lembrar}
                 onChange={handleChange}
               />
               <span className="lg-check__box" />
-              Lembrar acesso
+              <span>Lembrar acesso</span>
             </label>
-            <a href="#" className="lg-link">
+            <a href="#" className="lg-link" tabIndex={0}>
               Esqueceu a senha?
             </a>
           </div>
@@ -202,10 +250,11 @@ export default function Login() {
             type="submit"
             className={`lg-btn ${isRH ? 'lg-btn--rh' : 'lg-btn--func'}`}
             disabled={carregando}
+            aria-busy={carregando}
           >
             {carregando ? (
               <>
-                <span className="lg-spinner" />
+                <span className="lg-spinner" aria-hidden="true" />
                 Autenticando...
               </>
             ) : (
@@ -224,7 +273,9 @@ export default function Login() {
       </div>
 
       {/* Crédito de versão */}
-      <span className="lg-version">Sistema v2.0</span>
+      <span className="lg-version" aria-hidden="true">
+        Sistema v2.0
+      </span>
     </div>
   )
 }

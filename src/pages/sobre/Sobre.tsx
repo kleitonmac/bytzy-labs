@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, CSSProperties } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import {
   Code2,
   Layers,
@@ -15,35 +15,42 @@ import {
   Twitter,
 } from 'lucide-react'
 import './Sobre.modules.css'
+import type { LucideIcon } from 'lucide-react' // ✅ Tipo oficial Lucide
 
 const ANO_FUNDACAO = 2020
 const ANO_ATUAL = new Date().getFullYear()
 const ANOS_MERCADO = ANO_ATUAL - ANO_FUNDACAO
 
-const SERVICOS = [
+// ✅ CORRIGIDO: Usa LucideIcon ao invés de JSX
+const SERVICOS: Array<{
+  icon: LucideIcon
+  titulo: string
+  descricao: string
+  tags: string[]
+}> = [
   {
-    icon: <Layers size={28} />,
+    icon: Layers,
     titulo: 'Single Page Applications',
     descricao:
       'Desenvolvemos SPAs modernas com React, performance de ponta e experiência de usuário memorável. Do design ao deploy.',
     tags: ['React', 'Vite', 'TypeScript'],
   },
   {
-    icon: <Wrench size={28} />,
+    icon: Wrench,
     titulo: 'Manutenção de Código',
     descricao:
       'Refatoramos, otimizamos e mantemos projetos existentes. Seu código legado vira ativo estratégico — limpo, documentado e escalável.',
     tags: ['Refatoração', 'CI/CD', 'Testes'],
   },
   {
-    icon: <Globe size={28} />,
+    icon: Globe,
     titulo: 'Landing Pages',
     descricao:
       'Páginas de alta conversão com carregamento rápido, SEO técnico e design responsivo que representam sua marca com precisão.',
     tags: ['SEO', 'Performance', 'Responsivo'],
   },
   {
-    icon: <Shield size={28} />,
+    icon: Shield,
     titulo: 'Consultoria Técnica',
     descricao:
       'Auditoria de projetos, escolha de stack, arquitetura de frontend e mentoria para equipes de desenvolvimento.',
@@ -63,21 +70,21 @@ const EQUIPE = [
     nome: 'Ana Silva',
     cargo: 'Dev Frontend & Fundadora',
     bio: 'Especialista em React e design systems.',
-    img: null,
+    img: null as string | null,
     social: { github: '#', linkedin: '#', twitter: '#' },
   },
   {
     nome: 'Carlos Santos',
     cargo: 'Engenheiro Full Stack',
     bio: 'Arquiteto de soluções com foco em performance.',
-    img: null,
+    img: null as string | null,
     social: { github: '#', linkedin: '#', twitter: '#' },
   },
   {
     nome: 'Mariana Costa',
     cargo: 'UI/UX & Dev Frontend',
     bio: 'Especialista em acessibilidade e experiência do usuário.',
-    img: null,
+    img: null as string | null,
     social: { github: '#', linkedin: '#', twitter: '#' },
   },
 ]
@@ -95,26 +102,14 @@ const TECNOLOGIAS = [
   'Jest',
   'Storybook',
   'PostgreSQL',
-]
+] as const
 
 const TIMELINE = [
   { ano: ANO_FUNDACAO, evento: 'Fundação da empresa com foco em SPAs React' },
-  {
-    ano: ANO_FUNDACAO + 1,
-    evento: 'Primeiros 20 projetos entregues',
-  },
-  {
-    ano: ANO_FUNDACAO + 2,
-    evento: 'Expansão para consultoria técnica',
-  },
-  {
-    ano: ANO_FUNDACAO + 3,
-    evento: 'Adoção completa de TypeScript e testes',
-  },
-  {
-    ano: ANO_ATUAL,
-    evento: 'Referência regional em frontend',
-  },
+  { ano: ANO_FUNDACAO + 1, evento: 'Primeiros 20 projetos entregues' },
+  { ano: ANO_FUNDACAO + 2, evento: 'Expansão para consultoria técnica' },
+  { ano: ANO_FUNDACAO + 3, evento: 'Adoção completa de TypeScript e testes' },
+  { ano: ANO_ATUAL, evento: 'Referência regional em frontend' },
 ]
 
 type CountTarget = string | number
@@ -130,7 +125,6 @@ function useCountUp(
     if (!trigger) return
 
     const num = parseInt(String(target))
-
     if (isNaN(num)) {
       setValue(target)
       return
@@ -141,7 +135,6 @@ function useCountUp(
     const step = (ts: number) => {
       if (start === null) start = ts
       const progress = Math.min((ts - start) / duration, 1)
-
       setValue(Math.floor(progress * num))
 
       if (progress < 1) requestAnimationFrame(step)
@@ -154,7 +147,7 @@ function useCountUp(
   return value
 }
 
-type StatProps = {
+interface StatProps {
   num: string
   label: string
   trigger: boolean
@@ -162,7 +155,6 @@ type StatProps = {
 
 const Stat = ({ num, label, trigger }: StatProps) => {
   const val = useCountUp(num, 1000, trigger)
-
   return (
     <div className="sb-stat">
       <span className="sb-stat__num">{val}</span>
@@ -177,7 +169,7 @@ const Sobre = () => {
 
   useEffect(() => {
     const obs = new IntersectionObserver(
-      (entries) => {
+      (entries: IntersectionObserverEntry[]) => {
         const entry = entries[0]
         if (entry.isIntersecting) setStatsVisible(true)
       },
@@ -185,7 +177,6 @@ const Sobre = () => {
     )
 
     if (statsRef.current) obs.observe(statsRef.current)
-
     return () => obs.disconnect()
   }, [])
 
@@ -221,21 +212,19 @@ const Sobre = () => {
             <a href="/contato" className="sb-btn sb-btn--primary">
               Iniciar projeto <ArrowRight size={16} />
             </a>
-
             <a href="#servicos" className="sb-btn sb-btn--ghost">
               Nossos serviços <ChevronRight size={16} />
             </a>
           </div>
         </div>
 
-                <div className="sb-hero__code" aria-hidden="true">
+        <div className="sb-hero__code" aria-hidden="true">
           <div className="sb-code-card">
             <div className="sb-code-card__dots">
               <span />
               <span />
               <span />
             </div>
-
             <pre className="sb-code-card__body">{`// O que fazemos
 const empresa = {
   foco: "Frontend de qualidade",
@@ -264,23 +253,18 @@ const empresa = {
       <section className="sb-about" id="sobre">
         <div className="sb-about__text">
           <span className="sb-label">Nossa história</span>
-
           <h2 className="sb-title">
-            Nascemos para fazer <br />
-            o <em>frontend direito</em>
+            Nascemos para fazer <br />o <em>frontend direito</em>
           </h2>
-
           <p>
             Em <strong>{ANO_FUNDACAO}</strong>, cansados de ver projetos bem
             pensados sendo prejudicados por código descuidado, fundamos a
             empresa com uma missão clara: entregar frontend de qualidade real.
           </p>
-
           <p>
-            Hoje, {ANOS_MERCADO} anos depois, somos a equipe técnica de confiança
-            de dezenas de empresas e startups.
+            Hoje, {ANOS_MERCADO} anos depois, somos a equipe técnica de
+            confiança de dezenas de empresas e startups.
           </p>
-
           <ul className="sb-about__checks">
             {[
               'Código documentado e testado',
@@ -297,17 +281,19 @@ const empresa = {
 
         <div className="sb-timeline">
           <div className="sb-timeline__line" />
-
           {TIMELINE.map((t, i) => (
             <div
               key={i}
               className="sb-timeline__item"
-              style={{ ['--delay' as any]: `${i * 0.1}s` } as CSSProperties}
+              style={
+                {
+                  '--delay': `${i * 0.1}s`,
+                } as React.CSSProperties
+              }
             >
               <div className="sb-timeline__dot">
                 <Code2 size={12} />
               </div>
-
               <div className="sb-timeline__content">
                 <span className="sb-timeline__year">{t.ano}</span>
                 <p>{t.evento}</p>
@@ -331,12 +317,17 @@ const empresa = {
             <div
               key={i}
               className="sb-service-card"
-              style={{ ['--delay' as any]: `${i * 0.08}s` } as CSSProperties}
+              style={
+                {
+                  '--delay': `${i * 0.08}s`,
+                } as React.CSSProperties
+              }
             >
-              <div className="sb-service-card__icon">{s.icon}</div>
+              <div className="sb-service-card__icon">
+                <s.icon size={28} />
+              </div>
               <h3>{s.titulo}</h3>
               <p>{s.descricao}</p>
-
               <div className="sb-service-card__tags">
                 {s.tags.map((t) => (
                   <span key={t}>{t}</span>
@@ -350,11 +341,9 @@ const empresa = {
       {/* STACK */}
       <section className="sb-tech">
         <span className="sb-label">Nosso stack</span>
-
         <h2 className="sb-title">
           Ferramentas que <em>dominamos</em>
         </h2>
-
         <div className="sb-tech__grid">
           {TECNOLOGIAS.map((t) => (
             <div key={t} className="sb-tech__pill">
@@ -378,7 +367,11 @@ const empresa = {
             <div
               key={i}
               className="sb-member"
-              style={{ ['--delay' as any]: `${i * 0.1}s` } as CSSProperties}
+              style={
+                {
+                  '--delay': `${i * 0.1}s`,
+                } as React.CSSProperties
+              }
             >
               <div className="sb-member__avatar">
                 {m.img ? (
@@ -392,12 +385,10 @@ const empresa = {
                   </span>
                 )}
               </div>
-
               <div className="sb-member__info">
                 <h3>{m.nome}</h3>
                 <span className="sb-member__cargo">{m.cargo}</span>
                 <p>{m.bio}</p>
-
                 <div className="sb-member__social">
                   <a href={m.social.github}>
                     <Github size={16} />
@@ -419,19 +410,15 @@ const empresa = {
       <section className="sb-cta">
         <div className="sb-cta__inner">
           <div className="sb-cta__glow" />
-
           <span className="sb-label sb-label--inv">Pronto para começar?</span>
-
           <h2>
             Vamos transformar sua ideia <br />
             em <em>código de verdade</em>
           </h2>
-
           <p>
             Conta pra gente o que você precisa. Respondemos em até 24 horas com
             uma proposta clara.
           </p>
-
           <a href="/contato" className="sb-btn sb-btn--primary">
             Falar com a equipe <ArrowRight size={16} />
           </a>

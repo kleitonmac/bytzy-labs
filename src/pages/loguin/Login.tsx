@@ -35,7 +35,8 @@ export default function Login() {
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value, checked, type } = e.target
+    const { name, value, type, checked } = e.target
+
     setForm((prev) => ({
       ...prev,
       [name]: type === 'checkbox' ? checked : value,

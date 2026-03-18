@@ -20,7 +20,9 @@ export default function Login() {
   })
   const [mostrarSenha, setMostrar] = useState(false)
   const [carregando, setCarregando] = useState(false)
-  const [erros, setErros] = useState<Partial<FormState>>({})
+  const [erros, setErros] = useState<
+  Partial<Record<keyof FormState, string>>
+>({})
   const emailRef = useRef<HTMLInputElement>(null)
 
   const isRH = perfil === 'rh'

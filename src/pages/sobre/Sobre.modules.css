@@ -3,7 +3,6 @@
    Aesthetic: Dark editorial with electric accents
    ============================================= */
 
-
 /* ── Tokens ────────────────────────────────── */
 :root {
   --bg: #080909;
@@ -14,15 +13,15 @@
   --border: rgba(255, 255, 255, 0.07);
   --border-2: rgba(255, 255, 255, 0.12);
 
-  --text-1: #eceee8;
-  --text-2: #92948e;
+  --text-1: #f7f7f7;
+  --text-2: #d8dad5;
   --text-3: #5a5c58;
-  --text-inv: #080909;
+  --text-inv: #080908;
 
-  --accent: #a3ff6e; /* verde elétrico */
+  --accent: #25d366; /* verde elétrico */
   --accent-dim: rgba(163, 255, 110, 0.1);
   --accent-glow: rgba(163, 255, 110, 0.2);
-  --accent-dark: #7fd44e;
+  --accent-dark: #1f7a5a;
 
   --blue: #5b8df6;
   --blue-dim: rgba(91, 141, 246, 0.1);
@@ -469,7 +468,7 @@
 }
 .sb-services__sub {
   font-size: 1rem;
-  color: var(--text-3);
+  color: var(--text-1);
   font-weight: 300;
   line-height: 1.7;
   margin-top: -0.25rem;
@@ -546,7 +545,7 @@
   font-size: 0.68rem;
   font-weight: 700;
   letter-spacing: 0.06em;
-  color: var(--text-3);
+  color: var(--text-1);
 }
 
 /* ══════════════════════════════════════════

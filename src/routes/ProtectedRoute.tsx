@@ -1,0 +1,24 @@
+import React from 'react'
+import { Navigate } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
+
+interface ProtectedRouteProps {
+  children: React.ReactNode
+  allowedRoles?: ('funcionario' | 'rh' | 'admin')[]
+}
+
+export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ 
+  children, 
+  allowedRoles 
+}) => {
+  const { user, loading } = useAuth()
+
+  if (loading) return <div>Carregando...</div>
+  if (!user) return <Navigate to="/login" replace />
+  
+  if (allowedRoles && !allowedRoles.includes(user.role as any)) {
+    return <Navigate to="/colaborador" replace />
+  }
+
+  return <>{children}</>
+}

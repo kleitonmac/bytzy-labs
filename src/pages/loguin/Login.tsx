@@ -13,6 +13,7 @@ interface FormState {
 interface ErrosForm {
   email?: string
   senha?: string
+  geral?: string
 }
 
 export default function Login() {
@@ -40,173 +41,148 @@ export default function Login() {
 
     if (!form.senha.trim()) {
       novosErros.senha = 'Informe sua senha'
-    } else if (form.senha.length < 6) {
-      novosErros.senha = 'Mínimo 6 caracteres'
     }
 
     return novosErros
   }, [form.email, form.senha])
 
-  // ✅ CORREÇÃO PRINCIPAL: Tratamento específico por campo
-  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value, checked } = e.target
+  const handleChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const { name, value, checked } = e.target
 
-    // ✅ Type guards explícitos para cada campo
-    if (name === 'email') {
-      setForm(prev => ({ ...prev, email: value }))
-    } else if (name === 'senha') {
-      setForm(prev => ({ ...prev, senha: value }))
-    } else if (name === 'lembrar') {
-      setForm(prev => ({ ...prev, lembrar: checked }))
-    }
+      setForm((prev) => ({
+        ...prev,
+        [name]: name === 'lembrar' ? checked : value,
+      }))
 
-    // Limpa erro do campo
-    if (erros[name as keyof ErrosForm]) {
-      setErros(prev => ({ ...prev, [name]: undefined }))
-    }
-  }, [erros])
-
-  const handleSubmit = useCallback((e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    const novosErros = validar()
-
-    if (Object.keys(novosErros).length > 0) {
-      setErros(novosErros)
-      if (novosErros.email && emailRef.current) {
-        emailRef.current.focus()
+      if (erros[name as keyof ErrosForm]) {
+        setErros((prev) => ({ ...prev, [name]: undefined }))
       }
-      return
-    }
+    },
+    [erros],
+  )
 
-    setCarregando(true)
-    setTimeout(() => {
-      console.log('Login:', { perfil, ...form })
-      setCarregando(false)
-    }, 1600)
-  }, [form, perfil, validar])
+  const handleSubmit = useCallback(
+    async (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault()
 
-  const trocarPerfil = useCallback((novoPerfil: Perfil) => {
-    if (novoPerfil === perfil) return
+      const novosErros = validar()
 
-    setPerfil(novoPerfil)
-    setErros({})
-    setForm({ email: '', senha: '', lembrar: false })
-    setTimeout(() => emailRef.current?.focus(), 100)
-  }, [perfil])
+      if (Object.keys(novosErros).length > 0) {
+        setErros(novosErros)
+        if (novosErros.email && emailRef.current) {
+          emailRef.current.focus()
+        }
+        return
+      }
 
-  // Resto do JSX permanece IDENTICO...
+      try {
+        setCarregando(true)
+        setErros({})
+
+        const response = await fetch('/api/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify({
+            perfil,
+            email: form.email,
+            senha: form.senha,
+            lembrar: form.lembrar,
+          }),
+        })
+
+        if (!response.ok) throw new Error()
+
+        setForm((prev) => ({ ...prev, senha: '' }))
+      } catch {
+        setErros({ geral: 'Credenciais inválidas ou erro no servidor' })
+      } finally {
+        setCarregando(false)
+      }
+    },
+    [form, perfil, validar],
+  )
+
+  const trocarPerfil = useCallback(
+    (novoPerfil: Perfil) => {
+      if (novoPerfil === perfil) return
+
+      setPerfil(novoPerfil)
+      setErros({})
+      setForm({ email: '', senha: '', lembrar: false })
+      setTimeout(() => emailRef.current?.focus(), 100)
+    },
+    [perfil],
+  )
+
   return (
     <div className={`lg-page ${isRH ? 'lg-page--rh' : ''}`}>
-      {/* ── Todo o JSX continua exatamente igual ── */}
-      <div className="lg-bg" aria-hidden="true">
-        <div className="lg-bg__orb lg-bg__orb--1" />
-        <div className="lg-bg__orb lg-bg__orb--2" />
-        <div className="lg-bg__grid" />
-      </div>
-
       <div className="lg-card">
-        <div className="lg-card__top">
-          <div className="lg-logo">
-            {isRH ? (
-              <ShieldCheck size={28} strokeWidth={1.8} />
-            ) : (
-              <User size={28} strokeWidth={1.8} />
-            )}
-          </div>
-          <div className="lg-card__intro">
-            <h1 className="lg-card__title">
-              {isRH ? 'Acesso RH' : 'Portal do Colaborador'}
-            </h1>
-            <p className="lg-card__sub">
-              {isRH
-                ? 'Área restrita — Recursos Humanos'
-                : 'Entre com suas credenciais corporativas'}
-            </p>
-          </div>
-        </div>
-
-        <div className="lg-toggle" role="group" aria-label="Tipo de acesso">
+        <div className="lg-toggle">
           <button
             type="button"
             className={`lg-toggle__btn ${perfil === 'funcionario' ? 'lg-toggle__btn--active' : ''}`}
             onClick={() => trocarPerfil('funcionario')}
-            aria-pressed={perfil === 'funcionario'}
           >
             <User size={15} />
             Funcionário
           </button>
+
           <button
             type="button"
             className={`lg-toggle__btn ${isRH ? 'lg-toggle__btn--active' : ''}`}
             onClick={() => trocarPerfil('rh')}
-            aria-pressed={isRH}
           >
             <ShieldCheck size={15} />
             RH
           </button>
         </div>
 
-        <div className={`lg-badge ${isRH ? 'lg-badge--rh' : 'lg-badge--func'}`}>
-          {isRH
-            ? '🔐 Acesso com privilégios administrativos'
-            : '👤 Acesso padrão de colaborador'}
-        </div>
+        {erros.geral && <div className="lg-error-global">{erros.geral}</div>}
 
         <form className="lg-form" onSubmit={handleSubmit} noValidate>
           <div className={`lg-field ${erros.email ? 'lg-field--error' : ''}`}>
-            <label htmlFor="email">E-mail corporativo</label>
+            <label>E-mail corporativo</label>
             <div className="lg-field__wrap">
               <Mail size={16} className="lg-field__icon" />
               <input
                 ref={emailRef}
-                id="email"
                 name="email"
                 type="email"
                 placeholder="seu@empresa.com.br"
                 value={form.email}
                 onChange={handleChange}
-                autoComplete="email"
-                autoFocus
-                aria-describedby={erros.email ? 'email-error' : undefined}
-                aria-invalid={!!erros.email}
+                autoComplete="username"
               />
             </div>
             {erros.email && (
-              <span id="email-error" className="lg-field__err" role="alert">
-                {erros.email}
-              </span>
+              <span className="lg-field__err">{erros.email}</span>
             )}
           </div>
 
           <div className={`lg-field ${erros.senha ? 'lg-field--error' : ''}`}>
-            <label htmlFor="senha">Senha</label>
+            <label>Senha</label>
             <div className="lg-field__wrap">
               <Lock size={16} className="lg-field__icon" />
               <input
-                id="senha"
                 name="senha"
                 type={mostrarSenha ? 'text' : 'password'}
                 placeholder="••••••••"
                 value={form.senha}
                 onChange={handleChange}
                 autoComplete="current-password"
-                aria-describedby={erros.senha ? 'senha-error' : undefined}
-                aria-invalid={!!erros.senha}
               />
               <button
                 type="button"
                 className="lg-field__eye"
                 onClick={() => setMostrarSenha((v) => !v)}
-                aria-label={mostrarSenha ? 'Ocultar senha' : 'Mostrar senha'}
-                tabIndex={0}
               >
                 {mostrarSenha ? <EyeOff size={16} /> : <Eye size={16} />}
               </button>
             </div>
             {erros.senha && (
-              <span id="senha-error" className="lg-field__err" role="alert">
-                {erros.senha}
-              </span>
+              <span className="lg-field__err">{erros.senha}</span>
             )}
           </div>
 
@@ -215,14 +191,14 @@ export default function Login() {
               <input
                 type="checkbox"
                 name="lembrar"
-                id="lembrar"
                 checked={form.lembrar}
                 onChange={handleChange}
               />
               <span className="lg-check__box" />
-              <span>Lembrar acesso</span>
+              <span>Manter conectado</span>
             </label>
-            <a href="#" className="lg-link" tabIndex={0}>
+
+            <a href="/recuperar-senha" className="lg-link lg-link-white">
               Esqueceu a senha?
             </a>
           </div>
@@ -231,30 +207,18 @@ export default function Login() {
             type="submit"
             className={`lg-btn ${isRH ? 'lg-btn--rh' : 'lg-btn--func'}`}
             disabled={carregando}
-            aria-busy={carregando}
           >
-            {carregando ? (
-              <>
-                <span className="lg-spinner" aria-hidden="true" />
-                Autenticando...
-              </>
-            ) : (
-              `Entrar como ${isRH ? 'RH' : 'Funcionário'}`
-            )}
+            {carregando ? 'Autenticando...' : 'Entrar'}
           </button>
         </form>
 
-        <p className="lg-footer">
+        <p className="lg-footer lg-footer-white">
           Problemas de acesso?{' '}
-          <a href="mailto:ti@empresa.com.br" className="lg-link">
-            Falar com TI
+          <a href="mailto:ti@empresa.com.br" className="lg-link lg-link-white">
+            Falar com a TI
           </a>
         </p>
       </div>
-
-      <span className="lg-version" aria-hidden="true">
-        Sistema v2.0
-      </span>
     </div>
   )
 }

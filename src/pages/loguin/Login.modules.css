@@ -43,6 +43,28 @@
   padding: 0;
 }
 
+/* ===== LINKS BRANCOS LOGIN ===== */
+
+.lg-link-white {
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all .2s ease;
+}
+
+.lg-link-white:hover {
+  color: #e5e7eb; /* branco suave */
+  text-decoration: underline;
+}
+
+.lg-link-white:active {
+  transform: scale(.98);
+}
+
+.lg-footer-white {
+  color: #ffffff;
+}
+
 /* ── PAGE ─────────────────────────────── */
 .lg-page {
   min-height: 100vh;

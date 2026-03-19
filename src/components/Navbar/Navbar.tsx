@@ -4,7 +4,7 @@ import { Link, useLocation } from 'react-router-dom'
 import styles from './Navbar.module.css'
 import logo from '../../assets/logo.png'
 const links = [
-  { path: '/', label: 'Início' },
+  { path: '/', label: 'Inicio' },
   { path: '/sobre', label: 'Sobre' },
   { path: '/contato', label: 'Contato' },
 ]
@@ -34,7 +34,7 @@ export default function Navbar() {
       <nav className={styles.navbar}>
         {/* ── Logo ── */}
         <Link to="/" className={styles.navbarLogo}>
-         <img src={logo} alt="Squad Nexty" style={{ width: 30, height: 30 }} />
+          <img src={logo} alt="Squad Nexty" style={{ width: 30, height: 30 }} />
           <span className={styles.logoText}>Squad Nexty</span>
         </Link>
         {/* ── Links desktop ── */}

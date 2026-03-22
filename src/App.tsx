@@ -2,7 +2,7 @@
 import { Routes, Route, Link } from 'react-router-dom'
 import Navbar from './components/Navbar/Navbar'
 import video from './assets/hero-video.mp4'
-import Login from './pages/loguin/Login'
+import Login from './pages/login/Login'
 import Sobre from './pages/sobre/Sobre'
 import Contato from './pages/contato/Contato'
 import './App.css'

@@ -1,4 +1,7 @@
+// src/hooks/useApi.ts
 import { useState, useCallback } from 'react'
+
+const API_URL = import.meta.env.VITE_API_URL ?? ''
 
 interface ApiResponse<T> {
   data: T | null
@@ -7,8 +10,8 @@ interface ApiResponse<T> {
   execute: (endpoint: string, options?: RequestInit) => Promise<T | null>
 }
 
-export const useApi = (): ApiResponse<any> => {
-  const [data, setData] = useState<any>(null)
+export const useApi = <T = any>(): ApiResponse<T> => {
+  const [data, setData] = useState<T | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -19,7 +22,7 @@ export const useApi = (): ApiResponse<any> => {
 
       try {
         const token = localStorage.getItem('token')
-        const response = await fetch(`http://localhost:5000${endpoint}`, {
+        const response = await fetch(`${API_URL}${endpoint}`, {
           ...options,
           headers: {
             'Content-Type': 'application/json',
@@ -35,7 +38,7 @@ export const useApi = (): ApiResponse<any> => {
         }
 
         setData(result)
-        return result
+        return result as T
       } catch (err) {
         const errorMessage =
           err instanceof Error ? err.message : 'Erro desconhecido'

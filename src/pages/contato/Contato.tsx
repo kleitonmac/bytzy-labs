@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import emailjs from '@emailjs/browser'
 import {
   Mail,
   MapPin,
@@ -34,10 +35,10 @@ const WhatsAppIcon = () => (
 
 // Config
 const CONFIG = {
-  whatsapp: '5527999990000',
+  whatsapp: '5527981911375',
   whatsappMsg: 'Olá! Vim pelo site e gostaria de mais informações.',
-  email: 'contato@empresa.com.br',
-  telefone: '+55 (27) 99999-0000',
+  email: 'nextysquard@gmail.com',
+  telefone: '+55 (27) 98191-1375',
   endereco: 'Serra, Espírito Santo — Brasil',
 }
 
@@ -49,7 +50,19 @@ const ASSUNTOS = [
   'Outro',
 ]
 
+/** EmailJS — pode sobrescrever com variáveis VITE_* no .env */
+const EMAILJS_SERVICE_ID =
+  import.meta.env.VITE_EMAILJS_SERVICE_ID || 'service_gmail'
+const EMAILJS_TEMPLATE_ID =
+  import.meta.env.VITE_EMAILJS_TEMPLATE_ID || 'template_gmail'
+const EMAILJS_PUBLIC_KEY =
+  import.meta.env.VITE_EMAILJS_PUBLIC_KEY || 'P3SS19_xUjHt9-wx4api'
+
 const Contato = () => {
+  useEffect(() => {
+    emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY })
+  }, [])
+
   const [formData, setFormData] = useState<FormContato>({
     nome: '',
     email: '',
@@ -81,21 +94,27 @@ const Contato = () => {
     >,
   ) => {
     const { name, value } = e.target
+    const key: keyof FormContato =
+      name === 'user_name'
+        ? 'nome'
+        : name === 'user_email'
+          ? 'email'
+          : (name as keyof FormContato)
 
     setFormData((prev) => ({
       ...prev,
-      [name]: value,
+      [key]: value,
     }))
 
-    if (errors[name as keyof FormContato]) {
+    if (errors[key]) {
       setErrors((prev) => ({
         ...prev,
-        [name]: '',
+        [key]: '',
       }))
     }
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
     const errs = validate()
@@ -105,14 +124,47 @@ const Contato = () => {
       return
     }
 
+    if (!EMAILJS_SERVICE_ID || !EMAILJS_TEMPLATE_ID || !EMAILJS_PUBLIC_KEY) {
+      setErrors({
+        mensagem:
+          'Envio por e-mail não configurado. Defina VITE_EMAILJS_* no .env do frontend.',
+      })
+      return
+    }
+
+    const corpoMensagem = [
+      `Assunto: ${formData.assunto}`,
+      `Empresa: ${formData.empresa.trim() || '—'}`,
+      '',
+      formData.mensagem,
+    ].join('\n')
+
     setEnviando(true)
+    setErrors({})
 
-    setTimeout(() => {
-      console.log('Formulário:', formData)
-
-      setEnviando(false)
+    try {
+      // send() é mais confiável que sendForm com React (estado controlado).
+      // No painel EmailJS, use as variáveis que seu template Gmail espera (ex.: {{message}}, {{user_email}}).
+      await emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        {
+          // Nomes mais usados em templates “Contact” / Gmail
+          message: corpoMensagem,
+          user_name: formData.nome,
+          user_email: formData.email,
+          from_name: formData.nome,
+          from_email: formData.email,
+          reply_to: formData.email,
+          name: formData.nome,
+          email: formData.email,
+          assunto: formData.assunto,
+          empresa: formData.empresa.trim() || '—',
+          subject: `[Site] ${formData.assunto}`,
+        },
+        { publicKey: EMAILJS_PUBLIC_KEY },
+      )
       setEnviado(true)
-
       setFormData({
         nome: '',
         email: '',
@@ -120,9 +172,24 @@ const Contato = () => {
         assunto: '',
         mensagem: '',
       })
-
       setTimeout(() => setEnviado(false), 6000)
-    }, 1400)
+    } catch (err: unknown) {
+      console.error('EmailJS:', err)
+      const detalhe =
+        err &&
+        typeof err === 'object' &&
+        'text' in err &&
+        typeof (err as { text: string }).text === 'string'
+          ? (err as { text: string }).text
+          : ''
+      setErrors({
+        mensagem: detalhe
+          ? `Envio falhou: ${detalhe}`
+          : 'Não foi possível enviar. Confira no EmailJS se o template usa {{message}}, {{user_email}} e {{user_name}} (ou equivalentes). Use também o WhatsApp.',
+      })
+    } finally {
+      setEnviando(false)
+    }
   }
 
   const whatsappUrl = `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(CONFIG.whatsappMsg)}`
@@ -285,7 +352,7 @@ const Contato = () => {
                   </label>
                   <input
                     id="nome"
-                    name="nome"
+                    name="user_name"
                     type="text"
                     placeholder="Seu nome"
                     value={formData.nome}
@@ -305,7 +372,7 @@ const Contato = () => {
                   </label>
                   <input
                     id="email"
-                    name="email"
+                    name="user_email"
                     type="email"
                     placeholder="seu@email.com"
                     value={formData.email}
@@ -412,7 +479,10 @@ const Contato = () => {
                 <CheckCircle size={22} />
                 <div>
                   <strong>Mensagem enviada!</strong>
-                  <span>Retornaremos em breve pelo e-mail informado.</span>
+                  <span>
+                    Confira a caixa de entrada e o spam do e-mail configurado no
+                    EmailJS (template Gmail).
+                  </span>
                 </div>
               </div>
             )}

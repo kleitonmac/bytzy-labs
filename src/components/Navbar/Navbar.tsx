@@ -3,23 +3,24 @@ import { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import styles from './Navbar.module.css'
 import logo from '../../assets/logo.png'
+import { useAuth } from '../../context/AuthContext'
+
 const links = [
-  { path: '/', label: 'Inicio' },
+  { path: '/', label: 'Início' },
   { path: '/sobre', label: 'Sobre' },
   { path: '/contato', label: 'Contato' },
 ]
 
 export default function Navbar() {
+  const { user } = useAuth()
   const location = useLocation()
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
 
-  /* Fecha menu ao trocar de rota */
   useEffect(() => {
     setOpen(false)
   }, [location.pathname])
 
-  /* Detecta scroll para ativar backdrop */
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20)
     window.addEventListener('scroll', onScroll, { passive: true })
@@ -32,12 +33,11 @@ export default function Navbar() {
       data-scrolled={scrolled ? 'true' : 'false'}
     >
       <nav className={styles.navbar}>
-        {/* ── Logo ── */}
         <Link to="/" className={styles.navbarLogo}>
           <img src={logo} alt="Squad Nexty" style={{ width: 30, height: 30 }} />
           <span className={styles.logoText}>Squad Nexty</span>
         </Link>
-        {/* ── Links desktop ── */}
+
         <div className={styles.navbarLinks}>
           {links.map((link) => (
             <Link
@@ -52,12 +52,15 @@ export default function Navbar() {
           ))}
         </div>
 
-        {/* ── Ações ── */}
         <div className={styles.navbarActions}>
-          <Link to="/login" className={styles.loginBtn}>
-            Entrar
-          </Link>
-
+          {user && (
+            <Link
+              to={user.role === 'funcionario' ? '/colaborador' : '/admin'}
+              className={styles.loginBtn}
+            >
+              {user.nome}
+            </Link>
+          )}
           <button
             className={styles.menuBtn}
             onClick={() => setOpen((o) => !o)}
@@ -69,7 +72,6 @@ export default function Navbar() {
         </div>
       </nav>
 
-      {/* ── Menu mobile ── */}
       {open && (
         <div className={styles.mobileMenu}>
           {links.map((link) => (
@@ -82,13 +84,15 @@ export default function Navbar() {
               {link.label}
             </Link>
           ))}
-          <Link
-            to="/login"
-            onClick={() => setOpen(false)}
-            className={styles.mobileLogin}
-          >
-            Entrar
-          </Link>
+          {user && (
+            <Link
+              to={user.role === 'funcionario' ? '/colaborador' : '/admin'}
+              onClick={() => setOpen(false)}
+              className={styles.mobileLogin}
+            >
+              Área do Usuário
+            </Link>
+          )}
         </div>
       )}
     </header>

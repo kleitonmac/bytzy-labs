@@ -1,4 +1,4 @@
-import { RouteObject } from 'react-router-dom'
+import type { RouteObject } from 'react-router-dom'
 import { ProtectedRoute } from '../components/ProtectedRoute'
 
 export const protectedRoutes: RouteObject[] = [
@@ -11,7 +11,7 @@ export const protectedRoutes: RouteObject[] = [
           <p>João Silva (Admin) - CRUD Funcionários</p>
         </div>
       </ProtectedRoute>
-    )
+    ),
   },
   {
     path: '/colaborador',
@@ -22,6 +22,6 @@ export const protectedRoutes: RouteObject[] = [
           <p>Pedro Oliveira - Escala de Ponto</p>
         </div>
       </ProtectedRoute>
-    )
-  }
+    ),
+  },
 ]

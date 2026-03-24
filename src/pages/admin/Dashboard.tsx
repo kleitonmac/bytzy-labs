@@ -1,25 +1,27 @@
-import React, { useState, useEffect } from 'react';
-import { useAuth } from '../../context/AuthContext';
-import { funcionarioService } from '../../services/funcionarioService';
+import React, { useState, useEffect } from 'react'
+import { useAuth } from '../../context/AuthContext'
+import { funcionarioService } from '../../services/funcionarioService'
 
 interface Funcionario {
-  id: number;
-  matricula: string;
-  nome: string;
-  sobrenome: string;
-  endereco?: string;
-  telefone?: string;
-  email?: string;
-  sexo?: string;
-  cep?: string;
-  fotoUrl?: string;
-  role: string;
+  id: number | string
+  codigo?: string
+  matricula: string
+  nome: string
+  sobrenome: string
+  endereco?: string
+  telefone?: string
+  email?: string
+  sexo?: string
+  cep?: string
+  fotoUrl?: string
+  role: string
 }
 
 export default function AdminDashboard() {
-  const { user, logout } = useAuth();
-  const [funcionarios, setFuncionarios] = useState<Funcionario[]>([]);
+  const { user, logout } = useAuth()
+  const [funcionarios, setFuncionarios] = useState<Funcionario[]>([])
   const [form, setForm] = useState({
+    codigo: '',
     matricula: '',
     senha: '',
     nome: '',
@@ -29,61 +31,69 @@ export default function AdminDashboard() {
     email: '',
     sexo: '',
     cep: '',
-    role: 'funcionario'
-  });
-  const [editingId, setEditingId] = useState<number | null>(null);
-  const [foto, setFoto] = useState<File | null>(null);
-  const [loading, setLoading] = useState(false);
+    role: 'funcionario',
+  })
+  const [editingId, setEditingId] = useState<number | string | null>(null)
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    loadFuncionarios();
-  }, []);
+    loadFuncionarios()
+  }, [])
 
   const loadFuncionarios = async () => {
     try {
-      const data = await funcionarioService.getAll();
-      setFuncionarios(data);
+      const data = await funcionarioService.getAll()
+      setFuncionarios(data)
     } catch (error) {
-      console.error('Erro ao carregar funcionários:', error);
+      console.error('Erro ao carregar funcionários:', error)
     }
-  };
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    
-    const formData = new FormData();
-    Object.entries(form).forEach(([key, value]) => {
-      formData.append(key, value as string);
-    });
-    if (foto) formData.append('foto', foto);
+    e.preventDefault()
+    setLoading(true)
 
     try {
       if (editingId) {
-        await funcionarioService.update(editingId, formData);
+        await funcionarioService.update(editingId, {
+          ...form,
+          senha: form.senha || undefined,
+        })
       } else {
-        await funcionarioService.create(formData);
+        await funcionarioService.create({
+          ...form,
+          senha: form.senha || '123456',
+        })
       }
-      loadFuncionarios();
-      resetForm();
+      loadFuncionarios()
+      resetForm()
     } catch (error) {
-      console.error('Erro ao salvar:', error);
+      console.error('Erro ao salvar:', error)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   const resetForm = () => {
     setForm({
-      matricula: '', senha: '', nome: '', sobrenome: '', endereco: '',
-      telefone: '', email: '', sexo: '', cep: '', role: 'funcionario'
-    });
-    setEditingId(null);
-    setFoto(null);
-  };
+      codigo: '',
+      matricula: '',
+      senha: '',
+      nome: '',
+      sobrenome: '',
+      endereco: '',
+      telefone: '',
+      email: '',
+      sexo: '',
+      cep: '',
+      role: 'funcionario',
+    })
+    setEditingId(null)
+  }
 
   const editFuncionario = (funcionario: Funcionario) => {
     setForm({
+      codigo: funcionario.codigo || funcionario.matricula,
       matricula: funcionario.matricula,
       nome: funcionario.nome,
       sobrenome: funcionario.sobrenome,
@@ -93,21 +103,21 @@ export default function AdminDashboard() {
       sexo: funcionario.sexo || '',
       cep: funcionario.cep || '',
       role: funcionario.role,
-      senha: ''
-    });
-    setEditingId(funcionario.id);
-  };
+      senha: '',
+    })
+    setEditingId(funcionario.id)
+  }
 
-  const deleteFuncionario = async (id: number) => {
+  const deleteFuncionario = async (id: number | string) => {
     if (confirm('Tem certeza que deseja excluir este funcionário?')) {
       try {
-        await funcionarioService.delete(id);
-        loadFuncionarios();
+        await funcionarioService.delete(id)
+        loadFuncionarios()
       } catch (error) {
-        console.error('Erro ao excluir:', error);
+        console.error('Erro ao excluir:', error)
       }
     }
-  };
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 p-8">
@@ -133,9 +143,20 @@ export default function AdminDashboard() {
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <input
+                  placeholder="ID (para login) *"
+                  value={form.codigo}
+                  onChange={(e) =>
+                    setForm({ ...form, codigo: e.target.value })
+                  }
+                  className="p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                  required
+                />
+                <input
                   placeholder="Matrícula *"
                   value={form.matricula}
-                  onChange={(e) => setForm({ ...form, matricula: e.target.value })}
+                  onChange={(e) =>
+                    setForm({ ...form, matricula: e.target.value })
+                  }
                   className="p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                   required
                 />
@@ -158,14 +179,18 @@ export default function AdminDashboard() {
               <input
                 placeholder="Sobrenome"
                 value={form.sobrenome}
-                onChange={(e) => setForm({ ...form, sobrenome: e.target.value })}
+                onChange={(e) =>
+                  setForm({ ...form, sobrenome: e.target.value })
+                }
                 className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
               />
               <div className="grid grid-cols-2 gap-4">
                 <input
                   placeholder="Telefone"
                   value={form.telefone}
-                  onChange={(e) => setForm({ ...form, telefone: e.target.value })}
+                  onChange={(e) =>
+                    setForm({ ...form, telefone: e.target.value })
+                  }
                   className="p-3 border border-gray-300 rounded-lg"
                 />
                 <input
@@ -209,19 +234,17 @@ export default function AdminDashboard() {
                   <option value="admin">Admin</option>
                 </select>
               </div>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={(e) => setFoto(e.target.files?.[0] || null)}
-                className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
-              />
               <div className="flex gap-3">
                 <button
                   type="submit"
                   disabled={loading}
                   className="flex-1 bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 disabled:opacity-50 font-medium"
                 >
-                  {loading ? 'Salvando...' : editingId ? 'Atualizar' : 'Adicionar'}
+                  {loading
+                    ? 'Salvando...'
+                    : editingId
+                      ? 'Atualizar'
+                      : 'Adicionar'}
                 </button>
                 {editingId && (
                   <button
@@ -238,15 +261,25 @@ export default function AdminDashboard() {
 
           {/* Lista de Funcionários */}
           <div className="bg-white p-8 rounded-xl shadow-lg overflow-hidden">
-            <h2 className="text-2xl font-semibold mb-6">Funcionários Cadastrados</h2>
+            <h2 className="text-2xl font-semibold mb-6">
+              Funcionários Cadastrados
+            </h2>
             <div className="overflow-x-auto">
               <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-gray-50">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nome</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Matrícula</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Role</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ações</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Nome
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Matrícula
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Role
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Ações
+                    </th>
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
@@ -265,7 +298,9 @@ export default function AdminDashboard() {
                             <div className="text-sm font-medium text-gray-900">
                               {funcionario.nome} {funcionario.sobrenome}
                             </div>
-                            <div className="text-sm text-gray-500">{funcionario.email}</div>
+                            <div className="text-sm text-gray-500">
+                              {funcionario.email}
+                            </div>
                           </div>
                         </div>
                       </td>
@@ -273,12 +308,20 @@ export default function AdminDashboard() {
                         {funcionario.matricula}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                          funcionario.role === 'admin' ? 'bg-red-100 text-red-800' :
-                          funcionario.role === 'rh' ? 'bg-blue-100 text-blue-800' :
-                          'bg-green-100 text-green-800'
-                        }`}>
-                          {funcionario.role === 'admin' ? 'Admin' : funcionario.role === 'rh' ? 'RH' : 'Funcionário'}
+                        <span
+                          className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                            funcionario.role === 'admin'
+                              ? 'bg-red-100 text-red-800'
+                              : funcionario.role === 'rh'
+                                ? 'bg-blue-100 text-blue-800'
+                                : 'bg-green-100 text-green-800'
+                          }`}
+                        >
+                          {funcionario.role === 'admin'
+                            ? 'Admin'
+                            : funcionario.role === 'rh'
+                              ? 'RH'
+                              : 'Funcionário'}
                         </span>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
@@ -304,5 +347,5 @@ export default function AdminDashboard() {
         </div>
       </div>
     </div>
-  );
+  )
 }

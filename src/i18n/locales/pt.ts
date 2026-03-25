@@ -1,4 +1,3 @@
-/** Textos públicos — PT-BR (fonte de verdade para o formato) */
 const pt = {
   nav: {
     home: 'Início',
@@ -8,7 +7,6 @@ const pt = {
     closeMenu: 'Fechar menu',
     userArea: 'Área do Usuário',
 
-    // 🌍 Idiomas
     selectLanguage: 'Selecionar idioma',
     langPt: 'Português (Brasil)',
     langEn: 'English',
@@ -81,24 +79,26 @@ const pt = {
     check2: 'Comunicação clara em todo o projeto',
     check3: 'Sem surpresas no prazo ou escopo',
     check4: 'Suporte pós-entrega incluso',
+
     servicesLabel: 'O que fazemos',
     servicesTitleLine1: 'Serviços que ',
     servicesTitleEm: 'entregamos',
+
     techLabel: 'Nosso stack',
     techTitleLine1: 'Ferramentas que ',
     techTitleEm: 'dominamos',
+
     teamLabel: 'As pessoas por trás',
     teamTitleLine1: 'Nossa ',
     teamTitleEm: 'equipe',
-    servicesTitle1: 'Serviços que ',
-    techTitle1: 'Ferramentas que ',
-    teamTitle1: 'Nossa ',
+
     ctaEyebrow: 'Pronto para começar?',
     ctaTitle1: 'Vamos transformar sua ideia ',
     ctaTitleEm: 'em código de verdade',
     ctaSub:
       'Conte pra gente o que você precisa. Respondemos em até 24 horas com uma proposta clara.',
     ctaButton: 'Falar com a equipe',
+
     servico1t: 'Single Page Applications',
     servico1d:
       'Desenvolvemos SPAs modernas com React, performance de ponta e experiência de usuário memorável. Do design ao deploy.',
@@ -111,6 +111,7 @@ const pt = {
     servico4t: 'Consultoria Técnica',
     servico4d:
       'Auditoria de projetos, escolha de stack, arquitetura de frontend e mentoria para equipes de desenvolvimento.',
+
     tagRefactor: 'Refatoração',
     tagCicd: 'CI/CD',
     tagTests: 'Testes',
@@ -120,15 +121,18 @@ const pt = {
     tagArch: 'Arquitetura',
     tagReview: 'Code Review',
     tagStack: 'Stack',
+
     statProjects: 'Projetos entregues',
     statYears: 'Anos no mercado',
     statClients: 'Clientes satisfeitos',
     statResponse: 'Tempo de resposta',
+
     timeline1: 'Fundação da empresa com foco em SPAs React',
     timeline2: 'Primeiros 20 projetos entregues',
     timeline3: 'Expansão para consultoria técnica',
     timeline4: 'Adoção completa de TypeScript e testes',
     timeline5: 'Referência regional em frontend',
+
     member1role: 'Dev Frontend & Fundadora',
     member1bio: 'Especialista em React e design systems.',
     member2role: 'Engenheiro Full Stack',
@@ -204,6 +208,6 @@ const pt = {
     emailSubjectPrefix: 'Assunto:',
     emailCompanyPrefix: 'Empresa:',
   },
-}
+} as const
 
 export default pt

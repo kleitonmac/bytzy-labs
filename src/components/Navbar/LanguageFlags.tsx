@@ -37,3 +37,4 @@ export function LanguageFlags({ locale, onChange, labels }: Props) {
     </div>
   )
 }
+// 🔥 LanguageFlags.tsx

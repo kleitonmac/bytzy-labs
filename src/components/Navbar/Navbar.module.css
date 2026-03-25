@@ -133,6 +133,54 @@
   color: #25d366 !important;
 }
 
+/* ── Idiomas (desktop, ao lado dos links) ─── */
+.navbarLang {
+  display: flex;
+  align-items: center;
+  margin-left: 0.35rem;
+  padding-left: 0.75rem;
+  border-left: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.navbarLang :global(.langFlags) {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.navbarLang :global(.langFlagBtn) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3px;
+  border: 2px solid transparent;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.04);
+  cursor: pointer;
+  line-height: 0;
+  transition:
+    border-color 0.2s,
+    opacity 0.2s,
+    background 0.2s;
+  opacity: 0.7;
+}
+
+.navbarLang :global(.langFlagBtn:hover) {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.navbarLang :global(.langFlagBtn[data-active='true']) {
+  opacity: 1;
+  border-color: rgba(37, 211, 102, 0.85);
+  background: rgba(37, 211, 102, 0.12);
+}
+
+/* Oculto no desktop duplicado na área direita */
+.navbarLangDesktop {
+  display: none;
+}
+
 /* ── Ações direita ─────────────────────────── */
 .navbarActions {
   display: flex;
@@ -198,6 +246,38 @@
 }
 
 /* ── Menu mobile ───────────────────────────── */
+.mobileLang {
+  display: flex;
+  justify-content: center;
+  padding: 0.5rem 0 0.75rem;
+  margin-bottom: 0.25rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.mobileLang :global(.langFlags) {
+  display: flex;
+  gap: 10px;
+}
+
+.mobileLang :global(.langFlagBtn) {
+  display: flex;
+  padding: 4px;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.06);
+  cursor: pointer;
+  line-height: 0;
+  opacity: 0.75;
+  transition:
+    border-color 0.2s,
+    opacity 0.2s;
+}
+
+.mobileLang :global(.langFlagBtn[data-active='true']) {
+  opacity: 1;
+  border-color: #25d366;
+}
+
 .mobileMenu {
   display: flex;
   flex-direction: column;
@@ -266,6 +346,16 @@
   .navbarLinks {
     display: none;
   }
+
+  /* ❌ REMOVE flags do topo no mobile */
+  .navbarLang {
+    display: none;
+  }
+
+  .navbarLangDesktop {
+    display: none; /* 👈 ESSA É A CORREÇÃO PRINCIPAL */
+  }
+
   .menuBtn {
     display: flex;
   }
@@ -275,4 +365,65 @@
   .logoText {
     display: none;
   }
+}
+/* 🌍 Idioma no mobile (PROFISSIONAL) */
+.mobileLang {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* 👈 alinhado à esquerda */
+  gap: 0.6rem;
+  padding: 1rem 0.5rem 0.5rem;
+  margin-top: 0.75rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* 📝 Texto "Selecionar idioma" */
+.mobileLangFlag {
+  font-family: 'Manrope', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: rgba(240, 242, 245, 0.55);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* 🎌 Container das bandeiras */
+.mobileLang :global(.langFlags) {
+  display: flex;
+  gap: 10px;
+}
+
+/* 🎌 Botões */
+.mobileLang :global(.langFlagBtn) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+  border-radius: 8px;
+  border: 2px solid transparent;
+  background: rgba(255, 255, 255, 0.06);
+  cursor: pointer;
+  opacity: 0.75;
+  transition: all 0.2s ease;
+}
+
+/* Hover */
+.mobileLang :global(.langFlagBtn:hover) {
+  opacity: 1;
+  transform: translateY(-1px);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Ativo */
+.mobileLang :global(.langFlagBtn[data-active='true']) {
+  opacity: 1;
+  border-color: #25d366;
+  background: rgba(37, 211, 102, 0.12);
+}
+
+/* Ajuste das flags (tamanho mais bonito) */
+.mobileLang :global(.fi) {
+  width: 20px;
+  height: 15px;
+  border-radius: 4px;
 }

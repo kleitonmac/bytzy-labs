@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from 'react' // ← SEM ReactNode
+import { useEffect, useRef, useState, useMemo } from 'react'
+import { Link } from 'react-router-dom'
 import {
   Code2,
   Layers,
@@ -16,77 +17,11 @@ import {
 } from 'lucide-react'
 import './Sobre.modules.css'
 import type { LucideIcon } from 'lucide-react'
+import { useLanguage } from '../../context/LanguageContext'
 
 const ANO_FUNDACAO = 2020
 const ANO_ATUAL = new Date().getFullYear()
 const ANOS_MERCADO = ANO_ATUAL - ANO_FUNDACAO
-
-const SERVICOS: Array<{
-  icon: LucideIcon
-  titulo: string
-  descricao: string
-  tags: string[]
-}> = [
-  {
-    icon: Layers,
-    titulo: 'Single Page Applications',
-    descricao:
-      'Desenvolvemos SPAs modernas com React, performance de ponta e experiência de usuário memorável. Do design ao deploy.',
-    tags: ['React', 'Vite', 'TypeScript'],
-  },
-  {
-    icon: Wrench,
-    titulo: 'Manutenção de Código',
-    descricao:
-      'Refatoramos, otimizamos e mantemos projetos existentes. Seu código legado vira ativo estratégico — limpo, documentado e escalável.',
-    tags: ['Refatoração', 'CI/CD', 'Testes'],
-  },
-  {
-    icon: Globe,
-    titulo: 'Landing Pages',
-    descricao:
-      'Páginas de alta conversão com carregamento rápido, SEO técnico e design responsivo que representam sua marca com precisão.',
-    tags: ['SEO', 'Performance', 'Responsivo'],
-  },
-  {
-    icon: Shield,
-    titulo: 'Consultoria Técnica',
-    descricao:
-      'Auditoria de projetos, escolha de stack, arquitetura de frontend e mentoria para equipes de desenvolvimento.',
-    tags: ['Arquitetura', 'Code Review', 'Stack'],
-  },
-]
-
-const STATS = [
-  { num: '80+', label: 'Projetos entregues' },
-  { num: `${ANOS_MERCADO}+`, label: 'Anos no mercado' },
-  { num: '100%', label: 'Clientes satisfeitos' },
-  { num: '24h', label: 'Tempo de resposta' },
-]
-
-const EQUIPE = [
-  {
-    nome: 'Ana Silva',
-    cargo: 'Dev Frontend & Fundadora',
-    bio: 'Especialista em React e design systems.',
-    img: null as string | null,
-    social: { github: '#', linkedin: '#', twitter: '#' },
-  },
-  {
-    nome: 'Carlos Santos',
-    cargo: 'Engenheiro Full Stack',
-    bio: 'Arquiteto de soluções com foco em performance.',
-    img: null as string | null,
-    social: { github: '#', linkedin: '#', twitter: '#' },
-  },
-  {
-    nome: 'Mariana Costa',
-    cargo: 'UI/UX & Dev Frontend',
-    bio: 'Especialista em acessibilidade e experiência do usuário.',
-    img: null as string | null,
-    social: { github: '#', linkedin: '#', twitter: '#' },
-  },
-]
 
 const TECNOLOGIAS = [
   'React',
@@ -103,15 +38,6 @@ const TECNOLOGIAS = [
   'PostgreSQL',
 ] as const
 
-const TIMELINE = [
-  { ano: ANO_FUNDACAO, evento: 'Fundação da empresa com foco em SPAs React' },
-  { ano: ANO_FUNDACAO + 1, evento: 'Primeiros 20 projetos entregues' },
-  { ano: ANO_FUNDACAO + 2, evento: 'Expansão para consultoria técnica' },
-  { ano: ANO_FUNDACAO + 3, evento: 'Adoção completa de TypeScript e testes' },
-  { ano: ANO_ATUAL, evento: 'Referência regional em frontend' },
-]
-
-// ✅ TIPOS CORRIGIDOS
 type CountTarget = string | number
 
 function useCountUp(
@@ -164,8 +90,115 @@ const Stat = ({ num, label, trigger }: StatProps) => {
 }
 
 const Sobre = () => {
+  const { t } = useLanguage()
   const statsRef = useRef<HTMLDivElement | null>(null)
   const [statsVisible, setStatsVisible] = useState(false)
+
+  const SERVICOS = useMemo<
+    Array<{
+      icon: LucideIcon
+      titulo: string
+      descricao: string
+      tags: string[]
+    }>
+  >(
+    () => [
+      {
+        icon: Layers,
+        titulo: t('sobre.servico1t'),
+        descricao: t('sobre.servico1d'),
+        tags: ['React', 'Vite', 'TypeScript'],
+      },
+      {
+        icon: Wrench,
+        titulo: t('sobre.servico2t'),
+        descricao: t('sobre.servico2d'),
+        tags: [t('sobre.tagRefactor'), t('sobre.tagCicd'), t('sobre.tagTests')],
+      },
+      {
+        icon: Globe,
+        titulo: t('sobre.servico3t'),
+        descricao: t('sobre.servico3d'),
+        tags: [t('sobre.tagSeo'), t('sobre.tagPerf'), t('sobre.tagResp')],
+      },
+      {
+        icon: Shield,
+        titulo: t('sobre.servico4t'),
+        descricao: t('sobre.servico4d'),
+        tags: [t('sobre.tagArch'), t('sobre.tagReview'), t('sobre.tagStack')],
+      },
+    ],
+    [t],
+  )
+
+  const STATS = useMemo(
+    () => [
+      { num: '80+', label: t('sobre.statProjects') },
+      { num: `${ANOS_MERCADO}+`, label: t('sobre.statYears') },
+      { num: '100%', label: t('sobre.statClients') },
+      { num: '24h', label: t('sobre.statResponse') },
+    ],
+    [t],
+  )
+
+  const TIMELINE = useMemo(
+    () =>
+      [
+        { ano: ANO_FUNDACAO, key: 'timeline1' as const },
+        { ano: ANO_FUNDACAO + 1, key: 'timeline2' as const },
+        { ano: ANO_FUNDACAO + 2, key: 'timeline3' as const },
+        { ano: ANO_FUNDACAO + 3, key: 'timeline4' as const },
+        { ano: ANO_ATUAL, key: 'timeline5' as const },
+      ].map((row) => ({
+        ano: row.ano,
+        evento: t(`sobre.${row.key}`),
+      })),
+    [t],
+  )
+
+  const EQUIPE = useMemo(
+    () => [
+      {
+        nome: 'Ana Silva',
+        cargo: t('sobre.member1role'),
+        bio: t('sobre.member1bio'),
+        img: null as string | null,
+        social: { github: '#', linkedin: '#', twitter: '#' },
+      },
+      {
+        nome: 'Carlos Santos',
+        cargo: t('sobre.member2role'),
+        bio: t('sobre.member2bio'),
+        img: null as string | null,
+        social: { github: '#', linkedin: '#', twitter: '#' },
+      },
+      {
+        nome: 'Mariana Costa',
+        cargo: t('sobre.member3role'),
+        bio: t('sobre.member3bio'),
+        img: null as string | null,
+        social: { github: '#', linkedin: '#', twitter: '#' },
+      },
+    ],
+    [t],
+  )
+
+  const codeSnippet = useMemo(
+    () => `// ${t('sobre.codeComment')}
+const empresa = {
+  foco: "${t('sobre.codeFoco')}",
+  desde: ${ANO_FUNDACAO},
+  especialidades: [
+    "${t('sobre.codeEsp1')}",
+    "${t('sobre.codeEsp2')}",
+    "${t('sobre.codeEsp3')}",
+    "${t('sobre.codeEsp4')}",
+  ],
+  stack: "${t('sobre.codeStack')}",
+  entrega: "${t('sobre.codeEntrega')}",
+}`,
+    [t],
+  )
 
   useEffect(() => {
     const obs = new IntersectionObserver(
@@ -191,29 +224,27 @@ const Sobre = () => {
 
         <div className="sb-hero__inner">
           <div className="sb-hero__badge">
-            <Sparkles size={12} /> Desde {ANO_FUNDACAO} · {ANOS_MERCADO} anos
-            construindo a web
+            <Sparkles size={12} />{' '}
+            {t('sobre.heroBadge', { year: ANO_FUNDACAO, years: ANOS_MERCADO })}
           </div>
 
           <h1 className="sb-hero__title">
-            Código que <br />
-            <em>funciona.</em> <br />
-            Design que <br />
-            <em>convence.</em>
+            {t('sobre.heroTitle1')}
+            <br />
+            <em>{t('sobre.heroEm1')}</em> <br />
+            {t('sobre.heroTitle2')}
+            <br />
+            <em>{t('sobre.heroEm2')}</em>
           </h1>
 
-          <p className="sb-hero__sub">
-            Somos uma empresa especializada em criação de{' '}
-            <strong>Single Page Applications</strong>, landing pages de alta
-            conversão e manutenção de projetos existentes.
-          </p>
+          <p className="sb-hero__sub">{t('sobre.heroSub')}</p>
 
           <div className="sb-hero__cta">
-            <a href="/contato" className="sb-btn sb-btn--primary">
-              Iniciar projeto <ArrowRight size={16} />
-            </a>
+            <Link to="/contato" className="sb-btn sb-btn--primary">
+              {t('sobre.ctaStart')} <ArrowRight size={16} />
+            </Link>
             <a href="#servicos" className="sb-btn sb-btn--ghost">
-              Nossos serviços <ChevronRight size={16} />
+              {t('sobre.ctaServices')} <ChevronRight size={16} />
             </a>
           </div>
         </div>
@@ -225,19 +256,7 @@ const Sobre = () => {
               <span />
               <span />
             </div>
-            <pre className="sb-code-card__body">{`// O que fazemos
-const empresa = {
-  foco: "Frontend de qualidade",
-  desde: ${ANO_FUNDACAO},
-  especialidades: [
-    "Single Page Apps",
-    "Manutenção de código",
-    "Landing pages",
-    "Consultoria técnica",
-  ],
-  stack: "React + TypeScript",
-  entrega: "Sempre no prazo ✓",
-}`}</pre>
+            <pre className="sb-code-card__body">{codeSnippet}</pre>
           </div>
         </div>
       </section>
@@ -250,25 +269,20 @@ const empresa = {
 
       <section className="sb-about" id="sobre">
         <div className="sb-about__text">
-          <span className="sb-label">Nossa história</span>
+          <span className="sb-label">{t('sobre.aboutLabel')}</span>
           <h2 className="sb-title">
-            Nascemos para fazer <br />o <em>frontend direito</em>
+            {t('sobre.aboutTitle1')}
+            <br />
+            <em>{t('sobre.aboutTitleEm')}</em>
           </h2>
-          <p>
-            Em <strong>{ANO_FUNDACAO}</strong>, cansados de ver projetos bem
-            pensados sendo prejudicados por código descuidado, fundamos a
-            empresa com uma missão clara: entregar frontend de qualidade real.
-          </p>
-          <p>
-            Hoje, {ANOS_MERCADO} anos depois, somos a equipe técnica de
-            confiança de dezenas de empresas e startups.
-          </p>
+          <p>{t('sobre.aboutP1', { year: ANO_FUNDACAO })}</p>
+          <p>{t('sobre.aboutP2', { years: ANOS_MERCADO })}</p>
           <ul className="sb-about__checks">
             {[
-              'Código documentado e testado',
-              'Comunicação clara em todo o projeto',
-              'Sem surpresas no prazo ou escopo',
-              'Suporte pós-entrega incluso',
+              t('sobre.check1'),
+              t('sobre.check2'),
+              t('sobre.check3'),
+              t('sobre.check4'),
             ].map((item) => (
               <li key={item}>
                 <CheckCircle2 size={16} /> {item}
@@ -279,7 +293,7 @@ const empresa = {
 
         <div className="sb-timeline">
           <div className="sb-timeline__line" />
-          {TIMELINE.map((t, i) => (
+          {TIMELINE.map((row, i) => (
             <div
               key={i}
               className="sb-timeline__item"
@@ -293,8 +307,8 @@ const empresa = {
                 <Code2 size={12} />
               </div>
               <div className="sb-timeline__content">
-                <span className="sb-timeline__year">{t.ano}</span>
-                <p>{t.evento}</p>
+                <span className="sb-timeline__year">{row.ano}</span>
+                <p>{row.evento}</p>
               </div>
             </div>
           ))}
@@ -303,9 +317,10 @@ const empresa = {
 
       <section className="sb-services" id="servicos">
         <div className="sb-services__header">
-          <span className="sb-label">O que fazemos</span>
+          <span className="sb-label">{t('sobre.servicesLabel')}</span>
           <h2 className="sb-title">
-            Serviços que <em>entregamos</em>
+            {t('sobre.servicesTitle1')}
+            <em>{t('sobre.servicesTitleEm')}</em>
           </h2>
         </div>
 
@@ -320,15 +335,14 @@ const empresa = {
                 } as React.CSSProperties
               }
             >
-              {/* ✅ CORRIGIDO: <s.icon> → <s.icon /> */}
               <div className="sb-service-card__icon">
                 <s.icon size={28} />
               </div>
               <h3>{s.titulo}</h3>
               <p>{s.descricao}</p>
               <div className="sb-service-card__tags">
-                {s.tags.map((t) => (
-                  <span key={t}>{t}</span>
+                {s.tags.map((tag) => (
+                  <span key={tag}>{tag}</span>
                 ))}
               </div>
             </div>
@@ -337,14 +351,15 @@ const empresa = {
       </section>
 
       <section className="sb-tech">
-        <span className="sb-label">Nosso stack</span>
+        <span className="sb-label">{t('sobre.techLabel')}</span>
         <h2 className="sb-title">
-          Ferramentas que <em>dominamos</em>
+          {t('sobre.techTitle1')}
+          <em>{t('sobre.techTitleEm')}</em>
         </h2>
         <div className="sb-tech__grid">
-          {TECNOLOGIAS.map((t) => (
-            <div key={t} className="sb-tech__pill">
-              <Zap size={12} /> {t}
+          {TECNOLOGIAS.map((tech) => (
+            <div key={tech} className="sb-tech__pill">
+              <Zap size={12} /> {tech}
             </div>
           ))}
         </div>
@@ -352,9 +367,10 @@ const empresa = {
 
       <section className="sb-team" id="equipe">
         <div className="sb-team__header">
-          <span className="sb-label">As pessoas por trás</span>
+          <span className="sb-label">{t('sobre.teamLabel')}</span>
           <h2 className="sb-title">
-            Nossa <em>equipe</em>
+            {t('sobre.teamTitle1')}
+            <em>{t('sobre.teamTitleEm')}</em>
           </h2>
         </div>
 
@@ -405,18 +421,16 @@ const empresa = {
       <section className="sb-cta">
         <div className="sb-cta__inner">
           <div className="sb-cta__glow" />
-          <span className="sb-label sb-label--inv">Pronto para começar?</span>
+          <span className="sb-label sb-label--inv">{t('sobre.ctaEyebrow')}</span>
           <h2>
-            Vamos transformar sua ideia <br />
-            em <em>código de verdade</em>
+            {t('sobre.ctaTitle1')}
+            <br />
+            <em>{t('sobre.ctaTitleEm')}</em>
           </h2>
-          <p>
-            Conta pra gente o que você precisa. Respondemos em até 24 horas com
-            uma proposta clara.
-          </p>
-          <a href="/contato" className="sb-btn sb-btn--primary">
-            Falar com a equipe <ArrowRight size={16} />
-          </a>
+          <p>{t('sobre.ctaSub')}</p>
+          <Link to="/contato" className="sb-btn sb-btn--primary">
+            {t('sobre.ctaButton')} <ArrowRight size={16} />
+          </Link>
         </div>
       </section>
     </div>

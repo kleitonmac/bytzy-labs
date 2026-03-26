@@ -84,7 +84,7 @@ const es: LocaleMessages = {
     check3: 'Sin sorpresas en plazo ni alcance',
     check4: 'Soporte post-entrega incluido',
     servicesLabel: 'Lo que hacemos',
-    servicesTitle1: 'Servicios que ',
+    servicesTitleLine1: 'Servicios que ',
     servicesTitleEm: 'entregamos',
     techLabel: 'Nuestro stack',
     techTitle1: 'Herramientas que ',

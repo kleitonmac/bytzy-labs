@@ -82,11 +82,11 @@ export type LocaleMessages = {
     techLabel: string
     techTitleLine1: string
     techTitleEm: string
-
+    techTitle1: string
     teamLabel: string
     teamTitleLine1: string
     teamTitleEm: string
-
+    teamTitle1: string
     ctaEyebrow: string
     ctaTitle1: string
     ctaTitleEm: string

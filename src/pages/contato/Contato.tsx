@@ -39,13 +39,18 @@ const CONFIG = {
 }
 
 const EMAILJS_SERVICE_ID =
-  import.meta.env.VITE_EMAILJS_SERVICE_ID || 'service_gmail'
+  import.meta.env.VITE_EMAILJS_SERVICE_ID || 'service_nextysqd'
 const EMAILJS_TEMPLATE_ID =
-  import.meta.env.VITE_EMAILJS_TEMPLATE_ID || 'template_kleiton'
+  import.meta.env.VITE_EMAILJS_TEMPLATE_ID || 'template_nextysqd'
 const EMAILJS_PUBLIC_KEY =
-  import.meta.env.VITE_EMAILJS_PUBLIC_KEY || 'xez6HwSBbMPZvRZcG'
+  import.meta.env.VITE_EMAILJS_PUBLIC_KEY || '5MUBWWRz38dXsculB'
 
 const EMAILJS_SEND_URL = 'https://api.emailjs.com/api/v1.0/email/send'
+
+// O template usa `{{avatar}}`; como o e-mail é renderizado fora do browser,
+// precisamos de uma URL pública acessível.
+const AVATAR_URL =
+  'https://raw.githubusercontent.com/kleitonmac/frontend-nexty/refs/heads/main/src/assets/logo.png'
 
 const Contato = () => {
   const { t } = useLanguage()
@@ -141,19 +146,15 @@ const Contato = () => {
     setErrors({})
 
     try {
-      // Enviamos tanto `from_*` quanto `user_*` para cobrir nomes comuns de variáveis
-      // no template EmailJS (dependendo de como ele foi configurado no painel).
       const templateParams = {
+        // Variáveis exatamente como no seu template_gmail
+        avatar: AVATAR_URL,
         name: formData.nome,
-        email: formData.email,
-        user_name: formData.nome,
-        user_email: formData.email,
+        time: new Date().toLocaleString('pt-BR'),
         message: corpoMensagem,
-        empresa: formData.empresa.trim() || '—',
-        assunto: formData.assunto,
+        reply_link: `mailto:${formData.email}`,
       }
 
-     
       const response = await fetch(EMAILJS_SEND_URL, {
         method: 'POST',
         headers: {

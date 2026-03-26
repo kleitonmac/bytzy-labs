@@ -1,13 +1,8 @@
 import type { Locale, LocaleMessages } from './types'
-
-import pt from './locales/pt'
+import { pt } from './types'
 import en from './locales/en'
 import es from './locales/es'
 
-export type { Locale, LocaleMessages }
+export type { Locale, LocaleMessages } from './types'
 
-export const translations: Record<Locale, LocaleMessages> = {
-  pt,
-  en,
-  es,
-}
+export const translations: Record<Locale, LocaleMessages> = { pt, en, es }

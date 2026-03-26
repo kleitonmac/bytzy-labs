@@ -8,14 +8,11 @@ const en: LocaleMessages = {
     openMenu: 'Open menu',
     closeMenu: 'Close menu',
     userArea: 'User area',
-
-    // 🌍 Idiomas
     selectLanguage: 'Select language',
     langPt: 'Portuguese (Brazil)',
     langEn: 'English',
     langEs: 'Spanish',
   },
-
   home: {
     badge: 'New: Generative AI integration available',
     titleLine1: 'Technology that ',
@@ -50,11 +47,9 @@ const en: LocaleMessages = {
     ctaEyebrow: 'Ready to start?',
     ctaTitleLine1: "Let's build something",
     ctaTitleEm: 'extraordinary together',
-    ctaSub:
-      'Tell us about your project. We respond within 24 hours with a clear proposal.',
+    ctaSub: 'Tell us about your project. We respond within 24 hours with a clear proposal.',
     ctaButton: 'Talk to our team',
   },
-
   sobre: {
     heroBadge: 'Since {year} · {years} years building the web',
     heroTitle1: 'Code that ',
@@ -85,7 +80,7 @@ const en: LocaleMessages = {
     check3: 'No surprises on timeline or scope',
     check4: 'Post-delivery support included',
     servicesLabel: 'What we do',
-    servicesTitleLine1: 'Services we ',
+    servicesTitle1: 'Services we ',
     servicesTitleEm: 'deliver',
     techLabel: 'Our stack',
     techTitle1: 'Tools we ',
@@ -136,10 +131,8 @@ const en: LocaleMessages = {
     member3role: 'UI/UX & frontend dev',
     member3bio: 'Accessibility and user experience specialist.',
   },
-
   contato: {
-    whatsappMsg:
-      'Hello! I came from the website and would like more information.',
+    whatsappMsg: 'Hello! I came from the website and would like more information.',
     eyebrow: 'Get in touch',
     title1: "Let's build",
     titleEm: 'something together?',
@@ -165,8 +158,7 @@ const en: LocaleMessages = {
     closed: 'Closed',
     onlineNow: 'Online now',
     formTitle: 'Send a message',
-    formSub:
-      'Fill out the form and we will get back to you as soon as possible.',
+    formSub: 'Fill out the form and we will get back to you as soon as possible.',
     labelName: 'Full name',
     req: 'required',
     phName: 'Your name',

@@ -8,20 +8,18 @@ const es: LocaleMessages = {
     openMenu: 'Abrir menú',
     closeMenu: 'Cerrar menú',
     userArea: 'Área de usuario',
-
-    // 🌍 Idiomas
     selectLanguage: 'Seleccionar idioma',
     langPt: 'Portugués (Brasil)',
     langEn: 'Inglés',
     langEs: 'Español',
   },
-
   home: {
     badge: 'Nuevo: integración con IA generativa disponible',
     titleLine1: 'Tecnología que ',
     titleEm: 'transforma',
     titleLine2: ' negocios reales.',
-    sub: 'Desarrollamos soluciones digitales de alto rendimiento — desde SPAs hasta sistemas completos. Su proyecto, nuestra obsesión por la calidad.',
+    sub:
+      'Desarrollamos soluciones digitales de alto rendimiento — desde SPAs hasta sistemas completos. Su proyecto, nuestra obsesión por la calidad.',
     ctaPrimary: 'Empezar ahora',
     ctaGhost: 'Conozca la empresa',
     metricUptime: 'Tiempo activo garantizado',
@@ -53,7 +51,6 @@ const es: LocaleMessages = {
       'Cuéntenos su proyecto. Respondemos en hasta 24 h con una propuesta clara.',
     ctaButton: 'Hablar con nuestro equipo',
   },
-
   sobre: {
     heroBadge: 'Desde {year} · {years} años construyendo la web',
     heroTitle1: 'Código que ',
@@ -84,7 +81,7 @@ const es: LocaleMessages = {
     check3: 'Sin sorpresas en plazo ni alcance',
     check4: 'Soporte post-entrega incluido',
     servicesLabel: 'Lo que hacemos',
-    servicesTitleLine1: 'Servicios que ',
+    servicesTitle1: 'Servicios que ',
     servicesTitleEm: 'entregamos',
     techLabel: 'Nuestro stack',
     techTitle1: 'Herramientas que ',
@@ -135,13 +132,13 @@ const es: LocaleMessages = {
     member3role: 'UI/UX y dev frontend',
     member3bio: 'Especialista en accesibilidad y experiencia de usuario.',
   },
-
   contato: {
     whatsappMsg: '¡Hola! Vine desde el sitio y me gustaría más información.',
     eyebrow: 'Contacto',
     title1: 'Construyamos',
     titleEm: 'algo juntos?',
-    lead: 'Ya sea un proyecto, duda o alianza — nuestro equipo responde en hasta ',
+    lead:
+      'Ya sea un proyecto, duda o alianza — nuestro equipo responde en hasta ',
     leadStrong: '24 horas',
     leadEnd: '.',
     waBtn: 'Escribir por WhatsApp',
@@ -176,7 +173,8 @@ const es: LocaleMessages = {
     labelMessage: 'Mensaje',
     phMessage: 'Describa su proyecto, duda o propuesta...',
     chars: 'caracteres',
-    privacy: 'Sus datos se tratan con seguridad y nunca se comparten.',
+    privacy:
+      'Sus datos se tratan con seguridad y nunca se comparten.',
     sending: 'Enviando...',
     submit: 'Enviar mensaje',
     successTitle: '¡Mensaje enviado!',

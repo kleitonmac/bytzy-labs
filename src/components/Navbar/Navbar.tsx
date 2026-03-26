@@ -19,8 +19,9 @@ export default function Navbar() {
       { path: '/', label: t('nav.home') },
       { path: '/sobre', label: t('nav.about') },
       { path: '/contato', label: t('nav.contact') },
-    
-  ], [t])
+    ],
+    [t],
+  )
 
   const langLabels = useMemo(
     () => ({
@@ -47,13 +48,11 @@ export default function Navbar() {
       data-scrolled={scrolled ? 'true' : 'false'}
     >
       <nav className={styles.navbar}>
-        {/* 🔥 Logo */}
         <Link to="/" className={styles.navbarLogo}>
           <img src={logo} alt="Squad Nexty" style={{ width: 30, height: 30 }} />
           <span className={styles.logoText}>Squad Nexty</span>
         </Link>
 
-        {/* 🔗 Links desktop */}
         <div className={styles.navbarLinks}>
           {links.map((link) => (
             <Link
@@ -66,11 +65,6 @@ export default function Navbar() {
               {link.label}
             </Link>
           ))}
-        </div>
-
-        {/* ⚙️ Ações */}
-        <div className={styles.navbarActions}>
-          {/* 🌍 Idiomas desktop */}
           <div className={styles.navbarLang}>
             <LanguageFlags
               locale={locale}
@@ -78,8 +72,16 @@ export default function Navbar() {
               labels={langLabels}
             />
           </div>
+        </div>
 
-          {/* 👤 Usuário */}
+        <div className={styles.navbarActions}>
+          <div className={styles.navbarLangDesktop}>
+            <LanguageFlags
+              locale={locale}
+              onChange={setLocale}
+              labels={langLabels}
+            />
+          </div>
           {user && (
             <Link
               to={user.role === 'funcionario' ? '/colaborador' : '/admin'}
@@ -88,8 +90,6 @@ export default function Navbar() {
               {user.nome}
             </Link>
           )}
-
-          {/* ☰ Menu */}
           <button
             className={styles.menuBtn}
             onClick={() => setOpen((o) => !o)}
@@ -101,10 +101,15 @@ export default function Navbar() {
         </div>
       </nav>
 
-      {/* 📱 MOBILE MENU */}
       {open && (
         <div className={styles.mobileMenu}>
-          {/* 🔗 Links */}
+          <div className={styles.mobileLang}>
+            <LanguageFlags
+              locale={locale}
+              onChange={setLocale}
+              labels={langLabels}
+            />
+          </div>
           {links.map((link) => (
             <Link
               key={link.path}
@@ -115,8 +120,6 @@ export default function Navbar() {
               {link.label}
             </Link>
           ))}
-
-          {/* 👤 Área do usuário */}
           {user && (
             <Link
               to={user.role === 'funcionario' ? '/colaborador' : '/admin'}
@@ -126,16 +129,6 @@ export default function Navbar() {
               {t('nav.userArea')}
             </Link>
           )}
-
-          {/* 🌍 Idioma (embaixo - profissional) */}
-          <div className={styles.mobileLang}>
-            <p className={styles.mobileLangFlag}>{t('nav.selectLanguage')}</p>
-            <LanguageFlags
-              locale={locale}
-              onChange={setLocale}
-              labels={langLabels}
-            />
-          </div>
         </div>
       )}
     </header>

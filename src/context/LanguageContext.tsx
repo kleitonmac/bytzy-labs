@@ -11,19 +11,14 @@ import { translations, type Locale, type LocaleMessages } from '../i18n'
 
 const STORAGE_KEY = 'squad-nexty-locale'
 
-function readStoredLocale(): Locale | null {
+function readStoredLocale(): Locale {
   try {
     const s = localStorage.getItem(STORAGE_KEY)
     if (s === 'pt' || s === 'en' || s === 'es') return s
-  } catch {}
-  return null
-}
-
-function getDefaultLocale(): Locale {
-  const browser = navigator.language.toLowerCase()
-  if (browser.startsWith('pt')) return 'pt'
-  if (browser.startsWith('es')) return 'es'
-  return 'en'
+  } catch {
+    /* ignore */
+  }
+  return 'pt'
 }
 
 function htmlLang(locale: Locale): string {
@@ -52,16 +47,16 @@ function getByPath(obj: unknown, path: string): unknown {
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const [locale, setLocaleState] = useState<Locale>(() =>
-    typeof window !== 'undefined'
-      ? readStoredLocale() ?? getDefaultLocale()
-      : 'pt',
+    typeof window !== 'undefined' ? readStoredLocale() : 'pt',
   )
 
   const setLocale = useCallback((l: Locale) => {
     setLocaleState(l)
     try {
       localStorage.setItem(STORAGE_KEY, l)
-    } catch {}
+    } catch {
+      /* ignore */
+    }
     document.documentElement.lang = htmlLang(l)
   }, [])
 
@@ -70,29 +65,20 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   }, [locale])
 
   const dict = translations[locale]
-  const fallbackDict = translations['pt']
 
   const t = useCallback(
     (path: string, vars?: Record<string, string | number>): string => {
-      const found =
-        getByPath(dict, path) ?? getByPath(fallbackDict, path)
-
-      if (typeof found !== 'string') {
-        console.warn(`Missing translation: ${path}`)
-        return path
-      }
-
+      const found = getByPath(dict, path)
+      if (typeof found !== 'string') return path
       let out = found
-
       if (vars) {
         for (const [k, v] of Object.entries(vars)) {
           out = out.replaceAll(`{${k}}`, String(v))
         }
       }
-
       return out
     },
-    [dict, fallbackDict],
+    [dict],
   )
 
   const value = useMemo(
@@ -101,9 +87,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   )
 
   return (
-    <LanguageContext.Provider value={value}>
-      {children}
-    </LanguageContext.Provider>
+    <LanguageContext.Provider value={value}>{children}</LanguageContext.Provider>
   )
 }
 

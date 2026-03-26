@@ -1,3 +1,4 @@
+/** Textos públicos — PT-BR (fonte de verdade para o formato) */
 const pt = {
   nav: {
     home: 'Início',
@@ -6,19 +7,18 @@ const pt = {
     openMenu: 'Abrir menu',
     closeMenu: 'Fechar menu',
     userArea: 'Área do Usuário',
-
     selectLanguage: 'Selecionar idioma',
     langPt: 'Português (Brasil)',
     langEn: 'English',
     langEs: 'Español',
   },
-
   home: {
     badge: 'Novo: Integração com IA generativa disponível',
     titleLine1: 'Tecnologia que ',
     titleEm: 'transforma',
     titleLine2: ' negócios reais.',
-    sub: 'Desenvolvemos soluções digitais de alto desempenho — das single pages aos sistemas completos. Seu projeto, nossa obsessão por qualidade.',
+    sub:
+      'Desenvolvemos soluções digitais de alto desempenho — das single pages aos sistemas completos. Seu projeto, nossa obsessão por qualidade.',
     ctaPrimary: 'Começar agora',
     ctaGhost: 'Conheça a empresa',
     metricUptime: 'Uptime garantido',
@@ -49,7 +49,6 @@ const pt = {
     ctaSub: 'Conte seu projeto. Respondemos em até 24h com uma proposta clara.',
     ctaButton: 'Falar com nossa equipe',
   },
-
   sobre: {
     heroBadge: 'Desde {year} · {years} anos construindo a web',
     heroTitle1: 'Código que ',
@@ -79,26 +78,21 @@ const pt = {
     check2: 'Comunicação clara em todo o projeto',
     check3: 'Sem surpresas no prazo ou escopo',
     check4: 'Suporte pós-entrega incluso',
-
     servicesLabel: 'O que fazemos',
-    servicesTitleLine1: 'Serviços que ',
+    servicesTitle1: 'Serviços que ',
     servicesTitleEm: 'entregamos',
-
     techLabel: 'Nosso stack',
-    techTitleLine1: 'Ferramentas que ',
+    techTitle1: 'Ferramentas que ',
     techTitleEm: 'dominamos',
-
     teamLabel: 'As pessoas por trás',
-    teamTitleLine1: 'Nossa ',
+    teamTitle1: 'Nossa ',
     teamTitleEm: 'equipe',
-
     ctaEyebrow: 'Pronto para começar?',
     ctaTitle1: 'Vamos transformar sua ideia ',
     ctaTitleEm: 'em código de verdade',
     ctaSub:
       'Conte pra gente o que você precisa. Respondemos em até 24 horas com uma proposta clara.',
     ctaButton: 'Falar com a equipe',
-
     servico1t: 'Single Page Applications',
     servico1d:
       'Desenvolvemos SPAs modernas com React, performance de ponta e experiência de usuário memorável. Do design ao deploy.',
@@ -111,7 +105,6 @@ const pt = {
     servico4t: 'Consultoria Técnica',
     servico4d:
       'Auditoria de projetos, escolha de stack, arquitetura de frontend e mentoria para equipes de desenvolvimento.',
-
     tagRefactor: 'Refatoração',
     tagCicd: 'CI/CD',
     tagTests: 'Testes',
@@ -121,18 +114,15 @@ const pt = {
     tagArch: 'Arquitetura',
     tagReview: 'Code Review',
     tagStack: 'Stack',
-
     statProjects: 'Projetos entregues',
     statYears: 'Anos no mercado',
     statClients: 'Clientes satisfeitos',
     statResponse: 'Tempo de resposta',
-
     timeline1: 'Fundação da empresa com foco em SPAs React',
     timeline2: 'Primeiros 20 projetos entregues',
     timeline3: 'Expansão para consultoria técnica',
     timeline4: 'Adoção completa de TypeScript e testes',
     timeline5: 'Referência regional em frontend',
-
     member1role: 'Dev Frontend & Fundadora',
     member1bio: 'Especialista em React e design systems.',
     member2role: 'Engenheiro Full Stack',
@@ -140,13 +130,13 @@ const pt = {
     member3role: 'UI/UX & Dev Frontend',
     member3bio: 'Especialista em acessibilidade e experiência do usuário.',
   },
-
   contato: {
     whatsappMsg: 'Olá! Vim pelo site e gostaria de mais informações.',
     eyebrow: 'Entre em contato',
     title1: 'Vamos construir',
     titleEm: 'algo juntos?',
-    lead: 'Seja um projeto, dúvida ou parceria — nossa equipe responde em até ',
+    lead:
+      'Seja um projeto, dúvida ou parceria — nossa equipe responde em até ',
     leadStrong: '24 horas',
     leadEnd: '.',
     waBtn: 'Chamar no WhatsApp',
@@ -181,7 +171,8 @@ const pt = {
     labelMessage: 'Mensagem',
     phMessage: 'Descreva seu projeto, dúvida ou proposta...',
     chars: 'caracteres',
-    privacy: 'Seus dados são tratados com segurança e nunca compartilhados.',
+    privacy:
+      'Seus dados são tratados com segurança e nunca compartilhados.',
     sending: 'Enviando...',
     submit: 'Enviar mensagem',
     successTitle: 'Mensagem enviada!',
@@ -208,6 +199,6 @@ const pt = {
     emailSubjectPrefix: 'Assunto:',
     emailCompanyPrefix: 'Empresa:',
   },
-} as const
+}
 
 export default pt

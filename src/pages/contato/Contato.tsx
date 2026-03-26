@@ -44,7 +44,7 @@ const EMAILJS_SERVICE_ID =
 const EMAILJS_TEMPLATE_ID =
   import.meta.env.VITE_EMAILJS_TEMPLATE_ID || 'template_kleiton'
 const EMAILJS_PUBLIC_KEY =
-  import.meta.env.VITE_EMAILJS_PUBLIC_KEY || 'P3SS19_xUjHt9-wx4'
+  import.meta.env.VITE_EMAILJS_PUBLIC_KEY || 'Osyoa06cp-_9k72mzmLJJ'
 
 const Contato = () => {
   const { t } = useLanguage()

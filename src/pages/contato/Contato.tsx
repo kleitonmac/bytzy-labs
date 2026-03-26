@@ -1,5 +1,4 @@
 import { useMemo, useState } from 'react'
-import emailjs from '@emailjs/browser'
 import {
   Mail,
   MapPin,
@@ -45,6 +44,8 @@ const EMAILJS_TEMPLATE_ID =
   import.meta.env.VITE_EMAILJS_TEMPLATE_ID || 'template_kleiton'
 const EMAILJS_PUBLIC_KEY =
   import.meta.env.VITE_EMAILJS_PUBLIC_KEY || 'xez6HwSBbMPZvRZcG'
+
+const EMAILJS_SEND_URL = 'https://api.emailjs.com/api/v1.0/email/send'
 
 const Contato = () => {
   const { t } = useLanguage()
@@ -140,18 +141,42 @@ const Contato = () => {
     setErrors({})
 
     try {
+      // Enviamos tanto `from_*` quanto `user_*` para cobrir nomes comuns de variáveis
+      // no template EmailJS (dependendo de como ele foi configurado no painel).
       const templateParams = {
-        from_name: formData.nome,
-        from_email: formData.email,
+        name: formData.nome,
+        email: formData.email,
+        user_name: formData.nome,
+        user_email: formData.email,
         message: corpoMensagem,
+        empresa: formData.empresa.trim() || '—',
+        assunto: formData.assunto,
       }
-      const response = await emailjs.send(
-        EMAILJS_SERVICE_ID,
-        EMAILJS_TEMPLATE_ID,
-        templateParams,
-        EMAILJS_PUBLIC_KEY,
-      )
-      console.log('EmailJS:', response.status, response.text)
+
+     
+      const response = await fetch(EMAILJS_SEND_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          service_id: EMAILJS_SERVICE_ID,
+          template_id: EMAILJS_TEMPLATE_ID,
+          // No endpoint REST, `user_id` é a public key (publicKey) da conta.
+          user_id: EMAILJS_PUBLIC_KEY,
+          template_params: templateParams,
+        }),
+      })
+
+      const responseText = await response.text().catch(() => '')
+      if (!response.ok) {
+        throw new Error(
+          responseText ||
+            `Falha ao enviar (HTTP ${response.status}). Verifique o template EmailJS e variáveis.`,
+        )
+      }
+
+      console.log('EmailJS: OK', response.status, responseText)
       setEnviado(true)
       setFormData({
         nome: '',
@@ -164,12 +189,7 @@ const Contato = () => {
     } catch (err: unknown) {
       console.error('EmailJS:', err)
       const detalhe =
-        err &&
-        typeof err === 'object' &&
-        'text' in err &&
-        typeof (err as { text: string }).text === 'string'
-          ? (err as { text: string }).text
-          : ''
+        err instanceof Error ? err.message : 'Erro desconhecido ao enviar.'
       setErrors({
         mensagem: detalhe
           ? `${t('contato.errSendPrefix')}${detalhe}`

@@ -185,7 +185,7 @@ const Sobre = () => {
 
   const codeSnippet = useMemo(
     () => `// ${t('sobre.codeComment')}
-const empresa = {
+const Nexty Squad = {
   foco: "${t('sobre.codeFoco')}",
   desde: ${ANO_FUNDACAO},
   especialidades: [

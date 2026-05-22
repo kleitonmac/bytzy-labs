@@ -1,6 +1,7 @@
-// src/components/Navbar/Navbar.tsx
 import { useState, useEffect, useMemo } from 'react'
 import { Link, useLocation } from 'react-router-dom'
+import { Menu, X } from 'lucide-react'
+import { FaInstagram, FaWhatsapp, FaEnvelope } from 'react-icons/fa6'
 import styles from './Navbar.module.css'
 import logo from '../../assets/logo.png'
 import { useAuth } from '../../context/AuthContext'
@@ -31,6 +32,13 @@ export default function Navbar() {
     }),
     [t],
   )
+
+  useEffect(() => {
+    document.body.style.overflow = open ? 'hidden' : ''
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [open])
 
   useEffect(() => {
     setOpen(false)
@@ -66,6 +74,7 @@ export default function Navbar() {
             </Link>
           ))}
           <div className={styles.navbarLang}>
+            <span className={styles.langLabel}>{t('nav.languageSection')}</span>
             <LanguageFlags
               locale={locale}
               onChange={setLocale}
@@ -76,6 +85,7 @@ export default function Navbar() {
 
         <div className={styles.navbarActions}>
           <div className={styles.navbarLangDesktop}>
+            <span className={styles.langLabel}>{t('nav.languageSection')}</span>
             <LanguageFlags
               locale={locale}
               onChange={setLocale}
@@ -91,46 +101,132 @@ export default function Navbar() {
             </Link>
           )}
           <button
+            type="button"
             className={styles.menuBtn}
             onClick={() => setOpen((o) => !o)}
             aria-label={open ? t('nav.closeMenu') : t('nav.openMenu')}
             aria-expanded={open}
           >
-            {open ? '✕' : '☰'}
+            <Menu size={18} aria-hidden="true" />
           </button>
         </div>
       </nav>
 
-      {open && (
-        <div className={styles.mobileMenu}>
-          <div className={styles.mobileLang}>
+      <div
+        className={`${styles.drawerOverlay} ${open ? styles.drawerOpen : ''}`}
+        onClick={() => setOpen(false)}
+      />
+
+      <div className={`${styles.drawerPanel} ${open ? styles.drawerOpen : ''}`}>
+        <div className={styles.drawerHeader}>
+          <Link
+            to="/"
+            className={styles.drawerLogo}
+            onClick={() => setOpen(false)}
+          >
+            <img src={logo} alt="Squad Nexty" style={{ width: 30, height: 30 }} />
+            <span className={styles.drawerLogoText}>Squad Nexty</span>
+          </Link>
+          <button
+            type="button"
+            className={styles.drawerCloseBtn}
+            onClick={() => setOpen(false)}
+            aria-label={t('nav.closeMenu')}
+          >
+            <X size={16} aria-hidden="true" />
+          </button>
+        </div>
+
+        <div className={styles.drawerContent}>
+          <div className={styles.drawerLang}>
+            <span className={styles.drawerSectionTitle}>
+              {t('nav.languageSection')}
+            </span>
             <LanguageFlags
               locale={locale}
               onChange={setLocale}
               labels={langLabels}
             />
           </div>
-          {links.map((link) => (
-            <Link
-              key={link.path}
-              to={link.path}
-              onClick={() => setOpen(false)}
-              className={styles.mobileLink}
-            >
-              {link.label}
-            </Link>
-          ))}
+
+          <div className={styles.drawerNavLinks}>
+            {links.map((link) => (
+              <Link
+                key={link.path}
+                to={link.path}
+                onClick={() => setOpen(false)}
+                className={`${styles.drawerNavLink} ${
+                  location.pathname === link.path ? styles.drawerActive : ''
+                }`}
+              >
+                {link.label}
+              </Link>
+            ))}
+          </div>
+
           {user && (
             <Link
               to={user.role === 'funcionario' ? '/colaborador' : '/admin'}
               onClick={() => setOpen(false)}
-              className={styles.mobileLogin}
+              className={styles.drawerLogin}
             >
               {t('nav.userArea')}
             </Link>
           )}
+
+          <div className={styles.drawerDivider} />
+
+          <div className={styles.drawerSocialsSection}>
+            <h4 className={styles.drawerSectionTitle}>
+              {t('contato.sideTitle')}
+            </h4>
+            <div className={styles.drawerSocialLinks}>
+              <a
+                href={`https://wa.me/5527981911375?text=${encodeURIComponent(
+                  t('contato.whatsappMsg'),
+                )}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`${styles.drawerSocialItem} ${styles.drawerWhatsapp}`}
+              >
+                <FaWhatsapp size={20} />
+                <div className={styles.drawerSocialInfo}>
+                  <span className={styles.drawerSocialLabel}>WhatsApp</span>
+                  <span className={styles.drawerSocialValue}>
+                    +55 (27) 98191-1375
+                  </span>
+                </div>
+              </a>
+
+              <a
+                href="https://www.instagram.com/squadnexty"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`${styles.drawerSocialItem} ${styles.drawerInstagram}`}
+              >
+                <FaInstagram size={20} />
+                <div className={styles.drawerSocialInfo}>
+                  <span className={styles.drawerSocialLabel}>Instagram</span>
+                  <span className={styles.drawerSocialValue}>@squadnexty</span>
+                </div>
+              </a>
+
+              <a
+                href="mailto:nextysquard@gmail.com"
+                className={`${styles.drawerSocialItem} ${styles.drawerEmail}`}
+              >
+                <FaEnvelope size={20} />
+                <div className={styles.drawerSocialInfo}>
+                  <span className={styles.drawerSocialLabel}>E-mail</span>
+                  <span className={styles.drawerSocialValue}>
+                    nextysquard@gmail.com
+                  </span>
+                </div>
+              </a>
+            </div>
+          </div>
         </div>
-      )}
+      </div>
     </header>
   )
 }

@@ -35,7 +35,7 @@ const CONFIG = {
   whatsapp: '5527981911375',
   email: 'nextysquard@gmail.com',
   telefone: '+55 (27) 98191-1375',
-  endereco: 'Serra, Espírito Santo — Brasil',
+  endereco: 'Serra, Espírito Santo - Brasil',
 }
 
 const EMAILJS_SERVICE_ID =
@@ -137,7 +137,9 @@ const Contato = () => {
 
     const corpoMensagem = [
       `${t('contato.emailSubjectPrefix')} ${formData.assunto}`,
-      `${t('contato.emailCompanyPrefix')} ${formData.empresa.trim() || '—'}`,
+      `${t('contato.emailCompanyPrefix')} ${
+        formData.empresa.trim() || t('common.dash')
+      }`,
       '',
       formData.mensagem,
     ].join('\n')
@@ -172,8 +174,7 @@ const Contato = () => {
       const responseText = await response.text().catch(() => '')
       if (!response.ok) {
         throw new Error(
-          responseText ||
-            `Falha ao enviar (HTTP ${response.status}). Verifique o template EmailJS e variáveis.`,
+          responseText || `${t('contato.errSendPrefix')}HTTP ${response.status}`,
         )
       }
 
@@ -190,7 +191,7 @@ const Contato = () => {
     } catch (err: unknown) {
       console.error('EmailJS:', err)
       const detalhe =
-        err instanceof Error ? err.message : 'Erro desconhecido ao enviar.'
+        err instanceof Error ? err.message : t('contato.errSendGeneric')
       setErrors({
         mensagem: detalhe
           ? `${t('contato.errSendPrefix')}${detalhe}`
@@ -316,11 +317,11 @@ const Contato = () => {
             <ul className="ct-hours__list">
               <li>
                 <span>{t('contato.hoursWeekdays')}</span>
-                <strong>09:00 – 18:00</strong>
+                <strong>09:00 - 18:00</strong>
               </li>
               <li>
                 <span>{t('contato.hoursSat')}</span>
-                <strong>09:00 – 13:00</strong>
+                <strong>09:00 - 13:00</strong>
               </li>
               <li className="ct-hours__off">
                 <span>{t('contato.hoursSun')}</span>

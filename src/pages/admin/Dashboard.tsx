@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useAuth } from '../../context/AuthContext'
+import { useLanguage } from '../../context/LanguageContext'
 import { funcionarioService } from '../../services/funcionarioService'
 
 interface Funcionario {
@@ -19,6 +20,7 @@ interface Funcionario {
 
 export default function AdminDashboard() {
   const { user, logout } = useAuth()
+  const { t } = useLanguage()
   const [funcionarios, setFuncionarios] = useState<Funcionario[]>([])
   const [form, setForm] = useState({
     codigo: '',
@@ -45,7 +47,7 @@ export default function AdminDashboard() {
       const data = await funcionarioService.getAll()
       setFuncionarios(data)
     } catch (error) {
-      console.error('Erro ao carregar funcionários:', error)
+      console.error(t('admin.loadError'), error)
     }
   }
 
@@ -68,7 +70,7 @@ export default function AdminDashboard() {
       loadFuncionarios()
       resetForm()
     } catch (error) {
-      console.error('Erro ao salvar:', error)
+      console.error(t('admin.saveError'), error)
     } finally {
       setLoading(false)
     }
@@ -109,14 +111,20 @@ export default function AdminDashboard() {
   }
 
   const deleteFuncionario = async (id: number | string) => {
-    if (confirm('Tem certeza que deseja excluir este funcionário?')) {
+    if (confirm(t('admin.confirmDelete'))) {
       try {
         await funcionarioService.delete(id)
         loadFuncionarios()
       } catch (error) {
-        console.error('Erro ao excluir:', error)
+        console.error(t('admin.deleteError'), error)
       }
     }
+  }
+
+  const roleLabel = (role: string) => {
+    if (role === 'admin') return 'Admin'
+    if (role === 'rh') return 'RH'
+    return t('admin.employeeRole')
   }
 
   return (
@@ -124,26 +132,25 @@ export default function AdminDashboard() {
       <div className="max-w-7xl mx-auto">
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-3xl font-bold text-gray-900">
-            Painel Admin/RH - {user?.nome}
+            {t('admin.title')} - {user?.nome}
           </h1>
           <button
             onClick={logout}
             className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700"
           >
-            Sair
+            {t('admin.logout')}
           </button>
         </div>
 
         <div className="grid lg:grid-cols-2 gap-8">
-          {/* Formulário CRUD */}
           <div className="bg-white p-8 rounded-xl shadow-lg">
             <h2 className="text-2xl font-semibold mb-6">
-              {editingId ? 'Editar Funcionário' : 'Novo Funcionário'}
+              {editingId ? t('admin.editEmployee') : t('admin.newEmployee')}
             </h2>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <input
-                  placeholder="ID (para login) *"
+                  placeholder={t('admin.idPlaceholder')}
                   value={form.codigo}
                   onChange={(e) =>
                     setForm({ ...form, codigo: e.target.value })
@@ -152,7 +159,7 @@ export default function AdminDashboard() {
                   required
                 />
                 <input
-                  placeholder="Matrícula *"
+                  placeholder={t('admin.registrationPlaceholder')}
                   value={form.matricula}
                   onChange={(e) =>
                     setForm({ ...form, matricula: e.target.value })
@@ -162,7 +169,7 @@ export default function AdminDashboard() {
                 />
                 <input
                   type="password"
-                  placeholder="Senha *"
+                  placeholder={t('admin.passwordPlaceholder')}
                   value={form.senha}
                   onChange={(e) => setForm({ ...form, senha: e.target.value })}
                   className="p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
@@ -170,14 +177,14 @@ export default function AdminDashboard() {
                 />
               </div>
               <input
-                placeholder="Nome *"
+                placeholder={t('admin.firstNamePlaceholder')}
                 value={form.nome}
                 onChange={(e) => setForm({ ...form, nome: e.target.value })}
                 className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                 required
               />
               <input
-                placeholder="Sobrenome"
+                placeholder={t('admin.lastNamePlaceholder')}
                 value={form.sobrenome}
                 onChange={(e) =>
                   setForm({ ...form, sobrenome: e.target.value })
@@ -186,7 +193,7 @@ export default function AdminDashboard() {
               />
               <div className="grid grid-cols-2 gap-4">
                 <input
-                  placeholder="Telefone"
+                  placeholder={t('admin.phonePlaceholder')}
                   value={form.telefone}
                   onChange={(e) =>
                     setForm({ ...form, telefone: e.target.value })
@@ -194,7 +201,7 @@ export default function AdminDashboard() {
                   className="p-3 border border-gray-300 rounded-lg"
                 />
                 <input
-                  placeholder="CEP"
+                  placeholder={t('admin.zipPlaceholder')}
                   value={form.cep}
                   onChange={(e) => setForm({ ...form, cep: e.target.value })}
                   className="p-3 border border-gray-300 rounded-lg"
@@ -202,13 +209,13 @@ export default function AdminDashboard() {
               </div>
               <input
                 type="email"
-                placeholder="Email"
+                placeholder={t('admin.emailPlaceholder')}
                 value={form.email}
                 onChange={(e) => setForm({ ...form, email: e.target.value })}
                 className="w-full p-3 border border-gray-300 rounded-lg"
               />
               <input
-                placeholder="Endereço"
+                placeholder={t('admin.addressPlaceholder')}
                 value={form.endereco}
                 onChange={(e) => setForm({ ...form, endereco: e.target.value })}
                 className="w-full p-3 border border-gray-300 rounded-lg"
@@ -219,17 +226,17 @@ export default function AdminDashboard() {
                   onChange={(e) => setForm({ ...form, sexo: e.target.value })}
                   className="p-3 border border-gray-300 rounded-lg"
                 >
-                  <option value="">Sexo</option>
-                  <option value="M">Masculino</option>
-                  <option value="F">Feminino</option>
-                  <option value="O">Outro</option>
+                  <option value="">{t('admin.sexPlaceholder')}</option>
+                  <option value="M">{t('admin.male')}</option>
+                  <option value="F">{t('admin.female')}</option>
+                  <option value="O">{t('admin.other')}</option>
                 </select>
                 <select
                   value={form.role}
                   onChange={(e) => setForm({ ...form, role: e.target.value })}
                   className="p-3 border border-gray-300 rounded-lg"
                 >
-                  <option value="funcionario">Funcionário</option>
+                  <option value="funcionario">{t('admin.employeeRole')}</option>
                   <option value="rh">RH</option>
                   <option value="admin">Admin</option>
                 </select>
@@ -241,10 +248,10 @@ export default function AdminDashboard() {
                   className="flex-1 bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 disabled:opacity-50 font-medium"
                 >
                   {loading
-                    ? 'Salvando...'
+                    ? t('admin.saving')
                     : editingId
-                      ? 'Atualizar'
-                      : 'Adicionar'}
+                      ? t('admin.update')
+                      : t('admin.add')}
                 </button>
                 {editingId && (
                   <button
@@ -252,33 +259,32 @@ export default function AdminDashboard() {
                     onClick={resetForm}
                     className="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50"
                   >
-                    Cancelar
+                    {t('admin.cancel')}
                   </button>
                 )}
               </div>
             </form>
           </div>
 
-          {/* Lista de Funcionários */}
           <div className="bg-white p-8 rounded-xl shadow-lg overflow-hidden">
             <h2 className="text-2xl font-semibold mb-6">
-              Funcionários Cadastrados
+              {t('admin.listTitle')}
             </h2>
             <div className="overflow-x-auto">
               <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-gray-50">
                   <tr>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Nome
+                      {t('admin.name')}
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Matrícula
+                      {t('admin.registration')}
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Role
+                      {t('admin.role')}
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Ações
+                      {t('admin.actions')}
                     </th>
                   </tr>
                 </thead>
@@ -317,11 +323,7 @@ export default function AdminDashboard() {
                                 : 'bg-green-100 text-green-800'
                           }`}
                         >
-                          {funcionario.role === 'admin'
-                            ? 'Admin'
-                            : funcionario.role === 'rh'
-                              ? 'RH'
-                              : 'Funcionário'}
+                          {roleLabel(funcionario.role)}
                         </span>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
@@ -329,13 +331,13 @@ export default function AdminDashboard() {
                           onClick={() => editFuncionario(funcionario)}
                           className="text-blue-600 hover:text-blue-900"
                         >
-                          Editar
+                          {t('admin.edit')}
                         </button>
                         <button
                           onClick={() => deleteFuncionario(funcionario.id)}
                           className="text-red-600 hover:text-red-900"
                         >
-                          Excluir
+                          {t('admin.delete')}
                         </button>
                       </td>
                     </tr>

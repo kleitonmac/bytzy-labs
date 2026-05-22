@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useAuth } from '../../context/AuthContext'
+import { useLanguage } from '../../context/LanguageContext'
 
 interface RegistroPonto {
   data: string
@@ -10,6 +11,7 @@ interface RegistroPonto {
 
 export default function ColaboradorDashboard() {
   const { user, logout } = useAuth()
+  const { t, locale } = useLanguage()
   const [escala, setEscala] = useState({
     entradas_saidas: [] as RegistroPonto[],
     horas_extras: 0,
@@ -21,6 +23,8 @@ export default function ColaboradorDashboard() {
     loadEscala()
   }, [])
 
+  const dateLocale = locale === 'pt' ? 'pt-BR' : locale
+
   const loadEscala = async () => {
     try {
       setLoading(true)
@@ -31,7 +35,7 @@ export default function ColaboradorDashboard() {
       const data = await response.json()
       setEscala(data)
     } catch (error) {
-      console.error('Erro ao carregar escala:', error)
+      console.error(t('colaborador.loadError'), error)
     } finally {
       setLoading(false)
     }
@@ -41,8 +45,8 @@ export default function ColaboradorDashboard() {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p>Carregando sua escala...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4" />
+          <p>{t('colaborador.loading')}</p>
         </div>
       </div>
     )
@@ -51,7 +55,6 @@ export default function ColaboradorDashboard() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 p-8">
       <div className="max-w-4xl mx-auto">
-        {/* Header */}
         <div className="text-center mb-12">
           <div className="inline-flex items-center bg-white px-6 py-4 rounded-2xl shadow-xl ring-1 ring-gray-900/5">
             <img
@@ -61,10 +64,10 @@ export default function ColaboradorDashboard() {
             />
             <div>
               <h1 className="text-3xl font-bold text-gray-900">
-                Olá, {user?.nome}!
+                {t('colaborador.hello', { name: user?.nome || '' })}
               </h1>
               <p className="text-lg text-gray-600 mt-1">
-                Matrícula:{' '}
+                {t('colaborador.registration')}{' '}
                 <span className="font-semibold text-blue-600">
                   {user?.matricula}
                 </span>
@@ -73,17 +76,16 @@ export default function ColaboradorDashboard() {
                 onClick={logout}
                 className="mt-4 bg-red-600 text-white px-6 py-2 rounded-xl hover:bg-red-700 transition-colors"
               >
-                Sair
+                {t('colaborador.logout')}
               </button>
             </div>
           </div>
         </div>
 
         <div className="grid lg:grid-cols-2 gap-8">
-          {/* Escala de Ponto */}
           <div className="bg-white rounded-2xl shadow-xl p-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
-              📋 Escala de Ponto
+              📋 {t('colaborador.scheduleTitle')}
             </h2>
             <div className="space-y-3">
               {escala.entradas_saidas.length > 0 ? (
@@ -94,27 +96,25 @@ export default function ColaboradorDashboard() {
                   >
                     <div className="flex justify-between items-center">
                       <span className="font-semibold text-gray-900">
-                        {new Date(registro.data).toLocaleDateString('pt-BR')}
+                        {new Date(registro.data).toLocaleDateString(dateLocale)}
                       </span>
                       <div className="text-right">
-                        <div>👉 {registro.entrada}</div>
-                        <div>🍽️ {registro.almoco}</div>
-                        <div>👋 {registro.saida}</div>
+                        <div>→ {registro.entrada}</div>
+                        <div>☕ {registro.almoco}</div>
+                        <div>← {registro.saida}</div>
                       </div>
                     </div>
                   </div>
                 ))
               ) : (
                 <p className="text-gray-500 text-center py-8">
-                  Nenhum registro de ponto encontrado
+                  {t('colaborador.noRecords')}
                 </p>
               )}
             </div>
           </div>
 
-          {/* Resumo */}
           <div className="space-y-6">
-            {/* Horas Extras */}
             <div className="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-2xl p-8 shadow-xl border-2 border-yellow-200">
               <div className="flex items-center">
                 <div className="p-3 bg-yellow-400 rounded-2xl mr-4">
@@ -131,7 +131,7 @@ export default function ColaboradorDashboard() {
                 </div>
                 <div>
                   <p className="text-sm font-medium text-yellow-800">
-                    Horas Extras
+                    {t('colaborador.overtime')}
                   </p>
                   <p className="text-3xl font-bold text-yellow-900">
                     {escala.horas_extras}h
@@ -140,7 +140,6 @@ export default function ColaboradorDashboard() {
               </div>
             </div>
 
-            {/* Folgas */}
             <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-2xl p-8 shadow-xl border-2 border-green-200">
               <div className="flex items-center">
                 <div className="p-3 bg-green-400 rounded-2xl mr-4">
@@ -157,14 +156,14 @@ export default function ColaboradorDashboard() {
                 </div>
                 <div>
                   <p className="text-sm font-medium text-green-800">
-                    Próximas Folgas
+                    {t('colaborador.daysOff')}
                   </p>
                   <p className="text-lg font-bold text-green-900">
                     {escala.folgas.length > 0
                       ? escala.folgas
-                          .map((f) => new Date(f).toLocaleDateString('pt-BR'))
+                          .map((f) => new Date(f).toLocaleDateString(dateLocale))
                           .join(', ')
-                      : 'Nenhuma folga'}
+                      : t('colaborador.noDaysOff')}
                   </p>
                 </div>
               </div>

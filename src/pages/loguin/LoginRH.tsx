@@ -1,8 +1,8 @@
 import { useState, useRef, useCallback } from 'react'
 import { Hash, Lock, Eye, EyeOff, ShieldCheck } from 'lucide-react'
-import { Link } from 'react-router-dom'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
+import { useLanguage } from '../../context/LanguageContext'
 import './Login.modules.css'
 
 interface FormState {
@@ -19,6 +19,7 @@ interface ErrosForm {
 
 export default function LoginRH() {
   const { loginRH } = useAuth()
+  const { t } = useLanguage()
   const navigate = useNavigate()
   const [form, setForm] = useState<FormState>({
     id: '',
@@ -33,16 +34,11 @@ export default function LoginRH() {
   const validar = useCallback((): ErrosForm => {
     const novosErros: ErrosForm = {}
 
-    if (!form.id.trim()) {
-      novosErros.id = 'Informe seu ID'
-    }
-
-    if (!form.senha.trim()) {
-      novosErros.senha = 'Informe sua senha'
-    }
+    if (!form.id.trim()) novosErros.id = t('login.idRequired')
+    if (!form.senha.trim()) novosErros.senha = t('login.passwordRequired')
 
     return novosErros
-  }, [form.id, form.senha])
+  }, [form.id, form.senha, t])
 
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -57,7 +53,7 @@ export default function LoginRH() {
         setErros((prev) => ({ ...prev, [name]: undefined }))
       }
     },
-    [erros]
+    [erros],
   )
 
   const handleSubmit = useCallback(
@@ -79,22 +75,17 @@ export default function LoginRH() {
         const ok = await loginRH(form.id, form.senha)
 
         if (!ok) {
-          setErros({
-            geral:
-              'Credenciais inválidas. Verifique seu ID e senha ou entre em contato com a TI.',
-          })
+          setErros({ geral: t('login.adminInvalid') })
         } else {
           navigate('/admin')
         }
       } catch {
-        setErros({
-          geral: 'Erro ao conectar. Verifique se o sistema está disponível.',
-        })
+        setErros({ geral: t('login.connectionError') })
       } finally {
         setCarregando(false)
       }
     },
-    [form, validar, loginRH, navigate]
+    [form, validar, loginRH, navigate, t],
   )
 
   return (
@@ -102,16 +93,14 @@ export default function LoginRH() {
       <div className="lg-card">
         <div className="lg-header">
           <ShieldCheck size={32} className="lg-header__icon" />
-          <h1 className="lg-header__title">Área RH / Admin</h1>
-          <p className="lg-header__sub">Acesse com seu ID</p>
+          <h1 className="lg-header__title">{t('login.adminTitle')}</h1>
+          <p className="lg-header__sub">{t('login.subtitle')}</p>
         </div>
 
         {erros.geral && <div className="lg-error-global">{erros.geral}</div>}
 
         <form className="lg-form" onSubmit={handleSubmit} noValidate>
-          <div
-            className={`lg-field ${erros.id ? 'lg-field--error' : ''}`}
-          >
+          <div className={`lg-field ${erros.id ? 'lg-field--error' : ''}`}>
             <label>ID</label>
             <div className="lg-field__wrap">
               <Hash size={16} className="lg-field__icon" />
@@ -119,25 +108,23 @@ export default function LoginRH() {
                 ref={inputRef}
                 name="id"
                 type="text"
-                placeholder="Ex: rh ou admin"
+                placeholder={t('login.adminPlaceholder')}
                 value={form.id}
                 onChange={handleChange}
                 autoComplete="username"
               />
             </div>
-            {erros.id && (
-              <span className="lg-field__err">{erros.id}</span>
-            )}
+            {erros.id && <span className="lg-field__err">{erros.id}</span>}
           </div>
 
           <div className={`lg-field ${erros.senha ? 'lg-field--error' : ''}`}>
-            <label>Senha</label>
+            <label>{t('login.password')}</label>
             <div className="lg-field__wrap">
               <Lock size={16} className="lg-field__icon" />
               <input
                 name="senha"
                 type={mostrarSenha ? 'text' : 'password'}
-                placeholder="••••••••"
+                placeholder="********"
                 value={form.senha}
                 onChange={handleChange}
                 autoComplete="current-password"
@@ -164,7 +151,7 @@ export default function LoginRH() {
                 onChange={handleChange}
               />
               <span className="lg-check__box" />
-              <span>Manter conectado</span>
+              <span>{t('login.keepConnected')}</span>
             </label>
           </div>
 
@@ -173,14 +160,14 @@ export default function LoginRH() {
             className="lg-btn lg-btn--rh"
             disabled={carregando}
           >
-            {carregando ? 'Autenticando...' : 'Entrar'}
+            {carregando ? t('login.authenticating') : t('login.enter')}
           </button>
         </form>
 
         <p className="lg-footer lg-footer-white">
-          É funcionário?{' '}
+          {t('login.employeeQuestion')}{' '}
           <Link to="/login" className="lg-link lg-link-white">
-            Acesse aqui
+            {t('login.accessHere')}
           </Link>
         </p>
       </div>

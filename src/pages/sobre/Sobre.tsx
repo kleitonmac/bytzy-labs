@@ -185,17 +185,26 @@ const Sobre = () => {
 
   const codeSnippet = useMemo(
     () => `// ${t('sobre.codeComment')}
-const Nexty Squad = {
-  foco: "${t('sobre.codeFoco')}",
-  desde: ${ANO_FUNDACAO},
+const ConsultingLM = {
+  foco: "Desenvolvimento de Software e Aplicativos",
   especialidades: [
-    "${t('sobre.codeEsp1')}",
-    "${t('sobre.codeEsp2')}",
-    "${t('sobre.codeEsp3')}",
-    "${t('sobre.codeEsp4')}",
+    "Aplicativos Mobile",
+    "Sistemas Web",
+    "Plataformas SaaS",
+    "APIs e Back-end",
+    "Painéis Administrativos",
+    "Integrações e Automações",
   ],
-  stack: "${t('sobre.codeStack')}",
-  entrega: "${t('sobre.codeEntrega')}",
+  tecnologias: [
+    "React",
+    "React Native",
+    "TypeScript",
+    "Node.js",
+    "NestJS",
+    "PostgreSQL",
+  ],
+  diferencial: "Soluções modernas, escaláveis e sob medida",
+  entrega: "Do planejamento à produção ✓",
 }`,
     [t],
   )

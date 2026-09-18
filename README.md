@@ -1,92 +1,72 @@
- 🤔 Sobre o Projeto
+# 🚀 Bytzy Labs - Frontend
 
-O **Nexty Frontend** faz parte de um ecossistema full-stack para automação comercial. Ele consome APIs backend (Node.js/Express) para gerenciar vendas, estoque e relatórios em tempo real. Ideal para PDVs modernos, com foco em usabilidade e escalabilidade.[web:2][web:4]
+Repositório oficial do website e plataforma da **Bytzy Labs** ([https://www.bytzy.com.br](https://www.bytzy.com.br)).
 
-Desenvolvido durante estudos em Análise e Desenvolvimento de Sistemas, priorizando boas práticas como Server-Side Rendering (SSR), TypeScript e design responsivo.
+A **Bytzy Labs** é especializada em desenvolvimento de soluções digitais de alto impacto: Single Page Applications (SPAs), criação de websites modernos, aplicativos mobile e soluções de automação comercial integradas à inteligência artificial.
+
+---
 
 ## ⚡ Funcionalidades
 
-- `Login e Autenticação`: Autenticação segura com JWT.
-- `Gestão de Vendas`: Cadastro rápido de itens, cálculo automático de totais e emissão de notas.
-- `Controle de Estoque`: Visualização e atualização em tempo real.
-- `Relatórios`: Dashboards com gráficos de vendas e desempenho.
-- `Responsivo`: Funciona perfeitamente em desktop, tablet e mobile.
-- `Internacionalização (i18n)`: Suporte a PT-BR e EN-US.
+- **Design Responsivo e Moderno**: Interface refinada, fluida e adaptada para dispositivos móveis, tablets e desktops.
+- **Internacionalização (i18n)**: Suporte completo a múltiplos idiomas (Português, Inglês e Espanhol).
+- **SEO & Performance Otimizados**: Metadados completos, Open Graph, Twitter Cards, Schema.org estruturado, sitemap.xml e robots.txt configurados para alcance máximo no Google.
+- **Formulário de Contato Integrado**: Envio direto por e-mail e integração facilitada com WhatsApp.
+- **Painel e Autenticação**: Estrutura modular preparada para área de colaboradores e administração.
+
+---
 
 ## 🛠️ Tecnologias
 
 | Categoria | Tecnologias |
 |-----------|-------------|
-| **Framework** | Next.js 14, React 18 |
-| **Linguagens** | TypeScript, JavaScript ES6+ |
-| **Estilização** | Tailwind CSS, Styled-Components |
-| **Estado** | Zustand ou Redux Toolkit |
-| **Outros** | Axios (HTTP), React Hook Form, Zod (Validação) |
+| **Core** | [React 19](https://react.dev/), [TypeScript](https://www.typescriptlang.org/) |
+| **Build & Bundler** | [Vite](https://vite.dev/) |
+| **Roteamento** | [React Router DOM v7](https://reactrouter.com/) |
+| **Ícones** | [Lucide React](https://lucide.dev/), [React Icons](https://react-icons.github.io/react-icons/) |
+| **Serviços** | EmailJS, Vercel |
 
-## 🚀 Como Executar
+---
+
+## 🚀 Como Executar Localmente
 
 ### Pré-requisitos
-
-- Node.js v18+
+- Node.js v18+ instalado
 - Git
-- Conta no Vercel (opcional, para deploy)
 
-### Passos
+### Instalação e Execução
 
 1. **Clone o repositório**:
    ```bash
-   git clone https://github.com/kleitonmac/frontend-nexty.git
-   cd frontend-nexty
-Instale as dependências:
+   git clone https://github.com/kleitonmac/bytzy-labs.git
+   cd bytzy-labs
+   ```
 
-bash
-npm install
-# ou yarn install
-Configure variáveis de ambiente:
-Crie um arquivo .env.local na raiz:
+2. **Instale as dependências**:
+   ```bash
+   npm install
+   ```
 
-text
-NEXT_PUBLIC_API_URL=http://localhost:3001/api
-NEXTAUTH_SECRET=seu-segredo-aqui
-NEXTAUTH_URL=http://localhost:3000
-Execute o projeto:
+3. **Inicie o servidor de desenvolvimento**:
+   ```bash
+   npm run dev
+   ```
 
-bash
-npm run dev
-Acesse http://localhost:3000.
+4. **Build para produção**:
+   ```bash
+   npm run build
+   ```
 
-Build e Deploy
-bash
-npm run build
-npm start
-Deploy grátis no Vercel com um clique!
+---
 
-🎥 Demo
-Acesse a demo online <!-- Adicione se disponível -->
+## 🌐 Produção e Deploy
 
-GIF de demonstração: <!-- Adicione GIF aqui -->
+O projeto é hospedado na **Vercel** sob o domínio oficial [https://www.bytzy.com.br](https://www.bytzy.com.br).
 
-🤝 Contribuição
-Fork o projeto.
+---
 
-Crie uma branch (git checkout -b feature/AmazingFeature).
+## 👨‍💻 Autor & Contato
 
-Commit suas mudanças (git commit -m 'Add some AmazingFeature').
-
-Push para a branch (git push origin feature/AmazingFeature).
-
-Abra um Pull Request.
-
-Nota: Contribuições bem-vindas! Siga o Code of Conduct.
-
-📄 Licença
-Distribuído sob a licença MIT. Veja LICENSE para mais detalhes.[web:3]
-
-👨‍💻 Autor
-Kleiton Macedo
-
-💼 Júnior Desenvolvedor | Estudante de Análise e Desenvolvimento de Sistemas
-
-🌍 Serra, Espírito Santo, Brasil
-
-📫 kleitonmac@github.com
+- **Bytzy Labs**: [https://www.bytzy.com.br](https://www.bytzy.com.br)
+- **WhatsApp**: +55 (27) 98191-1375
+- **Localização**: Serra, Espírito Santo - Brasil

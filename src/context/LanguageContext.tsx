@@ -9,7 +9,7 @@ import {
 } from 'react'
 import { translations, type Locale, type LocaleMessages } from '../i18n'
 
-const STORAGE_KEY = 'squad-nexty-locale'
+const STORAGE_KEY = 'bytzy-labs-locale'
 
 function readStoredLocale(): Locale {
   try {

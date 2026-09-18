@@ -49,8 +49,7 @@ const EMAILJS_SEND_URL = 'https://api.emailjs.com/api/v1.0/email/send'
 
 // O template usa `{{avatar}}`; como o e-mail é renderizado fora do browser,
 // precisamos de uma URL pública acessível.
-const AVATAR_URL =
-  'https://raw.githubusercontent.com/kleitonmac/frontend-nexty/refs/heads/main/src/assets/logo.png'
+const AVATAR_URL = 'https://www.bytzy.com.br/logo.png'
 
 const Contato = () => {
   const { t } = useLanguage()

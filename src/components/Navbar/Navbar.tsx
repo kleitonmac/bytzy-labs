@@ -57,8 +57,8 @@ export default function Navbar() {
     >
       <nav className={styles.navbar}>
         <Link to="/" className={styles.navbarLogo}>
-<img src={logo} alt="Tech" style={{ width: 30, height: 30 }} />
-            <span className={styles.logoText}>Bytzy Lab</span>
+            <img src={logo} alt="Bytzy Labs" style={{ width: 30, height: 30 }} />
+            <span className={styles.logoText}>Bytzy Labs</span>
         </Link>
 
         <div className={styles.navbarLinks}>
@@ -124,8 +124,8 @@ export default function Navbar() {
             className={styles.drawerLogo}
             onClick={() => setOpen(false)}
           >
-            <img src={logo} alt="Tech" style={{ width: 30, height: 30 }} />
-            <span className={styles.drawerLogoText}>Tech</span>
+            <img src={logo} alt="Bytzy Labs" style={{ width: 30, height: 30 }} />
+            <span className={styles.drawerLogoText}>Bytzy Labs</span>
           </Link>
           <button
             type="button"

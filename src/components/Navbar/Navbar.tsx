@@ -212,14 +212,14 @@ export default function Navbar() {
               </a>
 
               <a
-                href="mailto:contatotech@gmail.com"
+                href="mailto:contatobylabs@gmail.com"
                 className={`${styles.drawerSocialItem} ${styles.drawerEmail}`}
               >
                 <FaEnvelope size={20} />
                 <div className={styles.drawerSocialInfo}>
                   <span className={styles.drawerSocialLabel}>E-mail</span>
                   <span className={styles.drawerSocialValue}>
-                    contatotech@gmail.com
+                    contatobylabs@gmail.com
                   </span>
                 </div>
               </a>

@@ -33,17 +33,17 @@ const WhatsAppIcon = () => (
 
 const CONFIG = {
   whatsapp: '5527981911375',
-  email: 'contatotech@gmail.com',
+  email: 'contatobylabs@gmail.com',
   telefone: '+55 (27) 98191-1375',
   endereco: 'Serra, Espírito Santo - Brasil',
 }
 
 const EMAILJS_SERVICE_ID =
-  import.meta.env.VITE_EMAILJS_SERVICE_ID || 'service_nextysqd'
+  import.meta.env.VITE_EMAILJS_SERVICE_ID || 'service_bylabs'
 const EMAILJS_TEMPLATE_ID =
-  import.meta.env.VITE_EMAILJS_TEMPLATE_ID || 'template_nextysqd'
+  import.meta.env.VITE_EMAILJS_TEMPLATE_ID || 'template_bylabs'
 const EMAILJS_PUBLIC_KEY =
-  import.meta.env.VITE_EMAILJS_PUBLIC_KEY || '5MUBWWRz38dXsculB'
+  import.meta.env.VITE_EMAILJS_PUBLIC_KEY || 'M_tl8YRe3OVZScezV'
 
 const EMAILJS_SEND_URL = 'https://api.emailjs.com/api/v1.0/email/send'
 

@@ -68,5 +68,6 @@ O projeto é hospedado na **Vercel** sob o domínio oficial [https://www.bytzy.c
 ## 👨‍💻 Autor & Contato
 
 - **Bytzy Labs**: [https://www.bytzy.com.br](https://www.bytzy.com.br)
+- **E-mail**: contatobylabs@gmail.com
 - **WhatsApp**: +55 (27) 98191-1375
 - **Localização**: Serra, Espírito Santo - Brasil

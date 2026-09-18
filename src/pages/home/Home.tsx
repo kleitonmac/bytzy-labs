@@ -7,7 +7,47 @@ import { CgBolt } from 'react-icons/cg'
 import { FaChartColumn } from 'react-icons/fa6'
 import { useLanguage } from '../../context/LanguageContext'
 
-const PARCEIROS = ['Vercel', 'Supabase', 'AWS', 'Stripe', 'Figma', 'GitHub']
+const PARCEIROS = [
+  'React',
+  'TypeScript',
+  'JavaScript',
+  'Tailwind CSS',
+  'Vite',
+
+  // Mobile
+  'React Native',
+  'Expo',
+
+  // Back-end
+  'Node.js',
+  'NestJS',
+  'Express',
+
+  // Banco de dados
+  'PostgreSQL',
+  'MongoDB',
+  'MySQL',
+  'Prisma',
+  'Supabase',
+
+  // Cloud / Infra
+  'AWS',
+  'Vercel',
+  'Cloudflare',
+  'Docker',
+  'Neon',
+
+  // APIs / Serviços
+  'Stripe',
+  'Firebase',
+  'Mapbox',
+  'Socket.IO',
+
+  // Desenvolvimento / Design
+  'GitHub',
+  'Git',
+  'Figma',
+  'Postman',]
 
 export default function Home() {
   const { t } = useLanguage()

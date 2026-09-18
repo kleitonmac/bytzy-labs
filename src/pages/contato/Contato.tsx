@@ -33,7 +33,7 @@ const WhatsAppIcon = () => (
 
 const CONFIG = {
   whatsapp: '5527981911375',
-  email: 'contatoconsultinglm@gmail.com',
+  email: 'contatotech@gmail.com',
   telefone: '+55 (27) 98191-1375',
   endereco: 'Serra, Espírito Santo - Brasil',
 }

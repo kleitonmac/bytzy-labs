@@ -57,8 +57,8 @@ export default function Navbar() {
     >
       <nav className={styles.navbar}>
         <Link to="/" className={styles.navbarLogo}>
-          <img src={logo} alt="Consulting LM" style={{ width: 30, height: 30 }} />
-          <span className={styles.logoText}>Consulting LM</span>
+<img src={logo} alt="Tech" style={{ width: 30, height: 30 }} />
+            <span className={styles.logoText}>Bytzy Lab</span>
         </Link>
 
         <div className={styles.navbarLinks}>
@@ -124,8 +124,8 @@ export default function Navbar() {
             className={styles.drawerLogo}
             onClick={() => setOpen(false)}
           >
-            <img src={logo} alt="Consulting LM" style={{ width: 30, height: 30 }} />
-            <span className={styles.drawerLogoText}>Consulting LM</span>
+            <img src={logo} alt="Tech" style={{ width: 30, height: 30 }} />
+            <span className={styles.drawerLogoText}>Tech</span>
           </Link>
           <button
             type="button"
@@ -212,14 +212,14 @@ export default function Navbar() {
               </a>
 
               <a
-                href="mailto:contatoconsultinglm@gmail.com"
+                href="mailto:contatotech@gmail.com"
                 className={`${styles.drawerSocialItem} ${styles.drawerEmail}`}
               >
                 <FaEnvelope size={20} />
                 <div className={styles.drawerSocialInfo}>
                   <span className={styles.drawerSocialLabel}>E-mail</span>
                   <span className={styles.drawerSocialValue}>
-                    contatoconsultinglm@gmail.com
+                    contatotech@gmail.com
                   </span>
                 </div>
               </a>

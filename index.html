@@ -1,110 +1,235 @@
+```html
 <!doctype html>
 <html lang="pt-BR" prefix="og: https://ogp.me/ns#">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Bytzy Labs | Desenvolvimento Web, Aplicativos Mobile e Automação com IA</title>
 
-    <!-- SEO Essencial -->
-    <meta name="description" content="Bytzy Labs - Soluções digitais de alta performance: desenvolvimento de sites modernos, Single Page Applications (React), aplicativos mobile e automações inteligentes com IA. Transforme seu negócio." />
-    <meta name="keywords" content="Bytzy Labs, Bytzy, desenvolvimento web, criação de sites, aplicativos mobile, automação comercial, inteligência artificial, React, TypeScript, landing page, sistemas web, software sob medida, desenvolvimento de software ES, Serra ES" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+
+    <!-- SEO principal -->
+    <title>
+      Bytzy Labs | Desenvolvimento de Sites, Apps e Sistemas em ES
+    </title>
+
+    <meta
+      name="description"
+      content="A Bytzy Labs desenvolve sites, sistemas web, aplicativos mobile e soluções digitais sob medida. Também oferecemos automação de processos e manutenção de computadores em Serra e no Espírito Santo."
+    />
+
     <meta name="author" content="Bytzy Labs" />
-    <meta name="publisher" content="Bytzy Labs" />
-    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+
+    <meta
+      name="robots"
+      content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+    />
+
     <meta name="theme-color" content="#0a0a0f" />
-    <meta name="language" content="pt-BR" />
-    <meta name="revisit-after" content="3 days" />
 
-    <!-- Canonical URL -->
-    <link rel="canonical" href="https://www.bytzy.com.br/" />
+    <!-- Canonical -->
+    <link
+      rel="canonical"
+      href="https://www.bytzy.com.br/"
+    />
 
-    <!-- Ícones e Favicon -->
-    <link rel="icon" type="image/png" href="/logo.png" />
-    <link rel="shortcut icon" type="image/png" href="/logo.png" />
-    <link rel="apple-touch-icon" href="/logo.png" />
+    <!-- Favicon -->
+    <link
+      rel="icon"
+      type="image/png"
+      href="/logo.png"
+    />
 
-    <!-- Open Graph / Facebook / WhatsApp -->
-    <meta property="og:site_name" content="Bytzy Labs" />
-    <meta property="og:title" content="Bytzy Labs | Desenvolvimento Web, Aplicativos Mobile e Automação com IA" />
-    <meta property="og:description" content="Transformamos ideias em produtos digitais de alta performance. Criação de sites, sistemas web, aplicativos mobile e automações sob medida." />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://www.bytzy.com.br/" />
-    <meta property="og:locale" content="pt_BR" />
-    <meta property="og:image" content="https://www.bytzy.com.br/logo.png" />
-    <meta property="og:image:secure_url" content="https://www.bytzy.com.br/logo.png" />
-    <meta property="og:image:type" content="image/png" />
-    <meta property="og:image:alt" content="Bytzy Labs - Soluções Digitais" />
+    <link
+      rel="apple-touch-icon"
+      href="/logo.png"
+    />
 
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Bytzy Labs | Desenvolvimento Web, Apps e Automação" />
-    <meta name="twitter:description" content="Soluções digitais de alta performance: sites modernos, SPAs, aplicativos móveis e automação com inteligência artificial." />
-    <meta name="twitter:image" content="https://www.bytzy.com.br/logo.png" />
-    <meta name="twitter:image:alt" content="Bytzy Labs" />
+    <!-- =====================================================
+         OPEN GRAPH
+         ===================================================== -->
 
-    <!-- Structured Data / JSON-LD -->
+    <meta
+      property="og:site_name"
+      content="Bytzy Labs"
+    />
+
+    <meta
+      property="og:type"
+      content="website"
+    />
+
+    <meta
+      property="og:title"
+      content="Bytzy Labs | Desenvolvimento Web, Apps e Sistemas"
+    />
+
+    <meta
+      property="og:description"
+      content="Desenvolvimento de sites, sistemas web, aplicativos mobile, automações e soluções digitais sob medida. Também oferecemos manutenção de computadores."
+    />
+
+    <meta
+      property="og:url"
+      content="https://www.bytzy.com.br/"
+    />
+
+    <meta
+      property="og:locale"
+      content="pt_BR"
+    />
+
+    <meta
+      property="og:image"
+      content="https://www.bytzy.com.br/logo.png"
+    />
+
+    <meta
+      property="og:image:secure_url"
+      content="https://www.bytzy.com.br/logo.png"
+    />
+
+    <meta
+      property="og:image:type"
+      content="image/png"
+    />
+
+    <meta
+      property="og:image:alt"
+      content="Bytzy Labs - Desenvolvimento de Software e Tecnologia"
+    />
+
+    <!-- =====================================================
+         TWITTER / X
+         ===================================================== -->
+
+    <meta
+      name="twitter:card"
+      content="summary_large_image"
+    />
+
+    <meta
+      name="twitter:title"
+      content="Bytzy Labs | Desenvolvimento Web, Apps e Sistemas"
+    />
+
+    <meta
+      name="twitter:description"
+      content="Sites, sistemas web, aplicativos mobile, automações e soluções digitais sob medida."
+    />
+
+    <meta
+      name="twitter:image"
+      content="https://www.bytzy.com.br/logo.png"
+    />
+
+    <meta
+      name="twitter:image:alt"
+      content="Bytzy Labs"
+    />
+
+    <!-- =====================================================
+         STRUCTURED DATA / JSON-LD
+         ===================================================== -->
+
     <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@graph": [
-        {
-          "@type": "Organization",
-          "@id": "https://www.bytzy.com.br/#organization",
-          "name": "Bytzy Labs",
-          "alternateName": "Bytzy",
-          "url": "https://www.bytzy.com.br",
-          "logo": {
-            "@type": "ImageObject",
-            "url": "https://www.bytzy.com.br/logo.png"
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Organization",
+            "@id": "https://www.bytzy.com.br/#organization",
+            "name": "Bytzy Labs",
+            "alternateName": "Bytzy",
+            "url": "https://www.bytzy.com.br/",
+            "logo": {
+              "@type": "ImageObject",
+              "@id": "https://www.bytzy.com.br/#logo",
+              "url": "https://www.bytzy.com.br/logo.png",
+              "contentUrl": "https://www.bytzy.com.br/logo.png",
+              "caption": "Bytzy Labs"
+            },
+            "description": "Empresa de tecnologia especializada no desenvolvimento de sites, sistemas web, aplicativos mobile, automações e soluções digitais sob medida, além de manutenção e suporte para computadores.",
+            "foundingDate": "2020",
+            "address": {
+              "@type": "PostalAddress",
+              "addressLocality": "Serra",
+              "addressRegion": "ES",
+              "addressCountry": "BR"
+            },
+            "contactPoint": {
+              "@type": "ContactPoint",
+              "telephone": "+55-27-98191-1375",
+              "email": "contatobylabs@gmail.com",
+              "contactType": "customer service",
+              "availableLanguage": [
+                "pt-BR",
+                "en",
+                "es"
+              ]
+            }
           },
-          "description": "Desenvolvimento de soluções digitais de alto desempenho: Single Page Applications, sistemas completos, aplicativos mobile e automação de processos com IA.",
-          "foundingDate": "2020",
-          "contactPoint": {
-            "@type": "ContactPoint",
+          {
+            "@type": "WebSite",
+            "@id": "https://www.bytzy.com.br/#website",
+            "url": "https://www.bytzy.com.br/",
+            "name": "Bytzy Labs",
+            "description": "Desenvolvimento de sites, sistemas web, aplicativos mobile, automações e suporte tecnológico.",
+            "publisher": {
+              "@id": "https://www.bytzy.com.br/#organization"
+            },
+            "inLanguage": "pt-BR"
+          },
+          {
+            "@type": "ProfessionalService",
+            "@id": "https://www.bytzy.com.br/#professional-service",
+            "name": "Bytzy Labs",
+            "url": "https://www.bytzy.com.br/",
+            "image": "https://www.bytzy.com.br/logo.png",
+            "logo": "https://www.bytzy.com.br/logo.png",
             "telephone": "+55-27-98191-1375",
             "email": "contatobylabs@gmail.com",
-            "contactType": "sales",
-            "availableLanguage": ["Portuguese", "English", "Spanish"]
-          },
-          "address": {
-            "@type": "PostalAddress",
-            "addressLocality": "Serra",
-            "addressRegion": "ES",
-            "addressCountry": "BR"
+            "description": "Desenvolvimento de sites, sistemas web, aplicativos mobile, automações e soluções digitais, além de manutenção e suporte para computadores.",
+            "priceRange": "$$",
+            "address": {
+              "@type": "PostalAddress",
+              "addressLocality": "Serra",
+              "addressRegion": "ES",
+              "addressCountry": "BR"
+            },
+            "areaServed": [
+              {
+                "@type": "City",
+                "name": "Serra"
+              },
+              {
+                "@type": "State",
+                "name": "Espírito Santo"
+              }
+            ],
+            "knowsAbout": [
+              "Desenvolvimento Web",
+              "Desenvolvimento de Aplicativos Mobile",
+              "Desenvolvimento de Sistemas",
+              "Software sob medida",
+              "Automação de processos",
+              "Inteligência Artificial",
+              "Manutenção de Computadores",
+              "Suporte Técnico"
+            ]
           }
-        },
-        {
-          "@type": "WebSite",
-          "@id": "https://www.bytzy.com.br/#website",
-          "name": "Bytzy Labs",
-          "url": "https://www.bytzy.com.br",
-          "description": "Desenvolvimento web, aplicativos mobile e automação de alta performance.",
-          "publisher": {
-            "@id": "https://www.bytzy.com.br/#organization"
-          }
-        },
-        {
-          "@type": "ProfessionalService",
-          "@id": "https://www.bytzy.com.br/#service",
-          "name": "Bytzy Labs",
-          "image": "https://www.bytzy.com.br/logo.png",
-          "url": "https://www.bytzy.com.br",
-          "telephone": "+55-27-98191-1375",
-          "email": "contatobylabs@gmail.com",
-          "priceRange": "$$",
-          "address": {
-            "@type": "PostalAddress",
-            "addressLocality": "Serra",
-            "addressRegion": "ES",
-            "addressCountry": "BR"
-          }
-        }
-      ]
-    }
+        ]
+      }
     </script>
   </head>
+
   <body>
     <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
+
+    <script
+      type="module"
+      src="/src/main.tsx"
+    ></script>
   </body>
 </html>

@@ -117,6 +117,10 @@ const es: LocaleMessages = {
     member2bio: 'Arquitecto de soluciones con foco en rendimiento.',
     member3role: 'UI/UX y dev frontend',
     member3bio: 'Especialista en accesibilidad y experiencia de usuario.',
+    member4role: 'Analista de Automatización y Procesos',
+    member4bio: 'Responsable de la automatización de tareas y procesos, desarrollo de soluciones para optimizar rutinas y mejorar la eficiencia operativa.',
+    member5role: 'Ingeniero de Software Frontend',
+    member5bio: 'Trabaja en el desarrollo de aplicaciones web modernas, con foco en arquitectura frontend, rendimiento, responsividad y experiencia de usuario.',
   },
   contato: {
     whatsappMsg: '¡Hola! Vine por el sitio y me gustaría recibir más información.',

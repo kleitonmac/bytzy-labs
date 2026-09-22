@@ -117,6 +117,10 @@ const en: LocaleMessages = {
     member2bio: 'Solution architect focused on performance.',
     member3role: 'UI/UX and frontend dev',
     member3bio: 'Specialist in accessibility and user experience.',
+    member4role: 'Automation and Process Analyst',
+    member4bio: 'Responsible for task and process automation, developing solutions to optimize routines and improve operational efficiency.',
+    member5role: 'Frontend Software Engineer',
+    member5bio: 'Works on modern web applications, focusing on frontend architecture, performance, responsiveness, and user experience.',
   },
   contato: {
     whatsappMsg: 'Hello! I came from the website and would like more information.',

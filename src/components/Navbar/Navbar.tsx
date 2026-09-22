@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { Menu, X } from 'lucide-react'
-import { FaInstagram, FaWhatsapp, FaEnvelope } from 'react-icons/fa6'
+import { FaWhatsapp, FaEnvelope } from 'react-icons/fa6'
 import styles from './Navbar.module.css'
 import logo from '../../assets/logo.png'
 import { useAuth } from '../../context/AuthContext'
@@ -51,11 +51,12 @@ export default function Navbar() {
   }, [])
 
   return (
-    <header
-      className={styles.navbarContainer}
-      data-scrolled={scrolled ? 'true' : 'false'}
-    >
-      <nav className={styles.navbar}>
+    <>
+      <header
+        className={styles.navbarContainer}
+        data-scrolled={scrolled ? 'true' : 'false'}
+      >
+        <nav className={styles.navbar}>
         <Link to="/" className={styles.navbarLogo}>
             <img src={logo} alt="Bytzy Labs" style={{ width: 30, height: 30 }} />
             <span className={styles.logoText}>Bytzy Labs</span>
@@ -110,7 +111,8 @@ export default function Navbar() {
             <Menu size={18} aria-hidden="true" />
           </button>
         </div>
-      </nav>
+        </nav>
+      </header>
 
       <div
         className={`${styles.drawerOverlay} ${open ? styles.drawerOpen : ''}`}
@@ -198,7 +200,7 @@ export default function Navbar() {
                 </div>
               </a>
 
-              <a
+              {/* <a
                 href="https://www.instagram.com/squadnexty"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -209,7 +211,7 @@ export default function Navbar() {
                   <span className={styles.drawerSocialLabel}>Instagram</span>
                   <span className={styles.drawerSocialValue}>@squadnexty</span>
                 </div>
-              </a>
+              </a> */}
 
               <a
                 href="mailto:contatobylabs@gmail.com"
@@ -227,6 +229,6 @@ export default function Navbar() {
           </div>
         </div>
       </div>
-    </header>
+    </>
   )
 }

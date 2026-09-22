@@ -159,26 +159,26 @@ const Sobre = () => {
   const EQUIPE = useMemo(
     () => [
       {
-        nome: 'Ana Silva',
+        nome: 'Kleiton Macedo',
         cargo: t('sobre.member1role'),
         bio: t('sobre.member1bio'),
         img: null as string | null,
-        social: { github: '#', linkedin: '#', twitter: '#' },
+        social: { github: 'https://github.com/kleitonmac/About', linkedin: 'https://www.linkedin.com/in/kleitonmacedo/', twitter: '#' },
       },
       {
-        nome: 'Carlos Santos',
+        nome: 'João Victor',
         cargo: t('sobre.member2role'),
         bio: t('sobre.member2bio'),
         img: null as string | null,
         social: { github: '#', linkedin: '#', twitter: '#' },
       },
-      {
-        nome: 'Mariana Costa',
-        cargo: t('sobre.member3role'),
-        bio: t('sobre.member3bio'),
-        img: null as string | null,
-        social: { github: '#', linkedin: '#', twitter: '#' },
-      },
+      // {
+      //   nome: 'Alana Reis',
+      //   cargo: t('sobre.member3role'),
+      //   bio: t('sobre.member3bio'),
+      //   img: null as string | null,
+      //   social: { github: '#', linkedin: '#', twitter: '#' },
+      // },
     ],
     [t],
   )

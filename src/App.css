@@ -19,6 +19,7 @@
   --text-1: #f0f2f5;
   --text-2: #dcdddf;
   --text-3: #3e4854;
+  --text-4: #ffffffab;
 
   --accent: #25d366; /* ciano elétrico */
   --accent-dim: rgba(0, 229, 255, 0.1);
@@ -242,7 +243,7 @@ body {
 .hero__sub {
   font-size: clamp(0.95rem, 1.5vw, 1.1rem);
   font-weight: 300;
-  color: rgba(240, 242, 245, 0.6);
+  color: rgba(240, 242, 245, 0.815);
   line-height: 1.75;
   max-width: 520px;
   margin-bottom: 2.5rem;
@@ -328,7 +329,7 @@ body {
 .hero__metric-label {
   font-size: 0.72rem;
   font-weight: 500;
-  color: var(--text-3);
+  color: var(--text-4);
   text-transform: uppercase;
   letter-spacing: 0.1em;
 }
@@ -374,7 +375,7 @@ body {
   font-weight: 700;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--text-3);
+  color: var(--text-1);
   margin-bottom: 1.25rem;
 }
 
@@ -390,7 +391,7 @@ body {
   font-family: var(--font-head);
   font-size: 1.1rem;
   letter-spacing: 0.12em;
-  color: var(--text-3);
+  color: var(--text-2);
   transition: color 0.2s;
   white-space: nowrap;
   border-right: 1px solid var(--border);
@@ -399,6 +400,9 @@ body {
   color: var(--accent);
 }
 
+.sb-stat__label{
+  color: var(--text-2);
+}
 /* ══════════════════════════════════════════
    FEATURES
 ══════════════════════════════════════════ */

@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { Menu, X } from 'lucide-react'
-import { FaWhatsapp, FaEnvelope } from 'react-icons/fa6'
+import { FaWhatsapp, FaInstagram, FaEnvelope } from 'react-icons/fa6'
 import styles from './Navbar.module.css'
 import logo from '../../assets/logo.png'
 import { useAuth } from '../../context/AuthContext'
@@ -200,8 +200,8 @@ export default function Navbar() {
                 </div>
               </a>
 
-              {/* <a
-                href="https://www.instagram.com/squadnexty"
+              <a
+                href="https://www.instagram.com/bytzylabs/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className={`${styles.drawerSocialItem} ${styles.drawerInstagram}`}
@@ -209,9 +209,9 @@ export default function Navbar() {
                 <FaInstagram size={20} />
                 <div className={styles.drawerSocialInfo}>
                   <span className={styles.drawerSocialLabel}>Instagram</span>
-                  <span className={styles.drawerSocialValue}>@squadnexty</span>
+                  <span className={styles.drawerSocialValue}>@bytzylabs</span>
                 </div>
-              </a> */}
+              </a>
 
               <a
                 href="mailto:contatobylabs@gmail.com"
